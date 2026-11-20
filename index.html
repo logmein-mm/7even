@@ -168,7 +168,6 @@ details[open] summary::before{content:"– "}
         <button class="chip" data-v="legal">Gekentekend<small>RDW-goedgekeurd</small></button>
         <button class="chip on" data-v="illegal">Geen kenteken<small>niet legaal op de weg</small></button>
       </div>
-      <div class="warn show" id="legalWarn">Een e-step zonder kenteken mag niet op de openbare weg (overgangsperiode afgelopen op 1 juli 2026). Dat drukt de doorverkoopwaarde.</div>
     </div>
   </section>
 
@@ -428,7 +427,6 @@ function calc(){
   const km = Math.max(0, +$('km').value || 0);
   const mo = months();
   const yrs = mo/12;
-  $('legalWarn').classList.toggle('show', st.legal==='illegal');
 
   const rows = [];
   let v = np; rows.push([npIn?`Nieuwprijs ${brand[0]}`:`Basiswaarde ${st.engine==='dual'?'dual':'single'} engine`, eur(np)]);
