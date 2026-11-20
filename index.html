@@ -75,6 +75,8 @@ input:focus,select:focus{border-color:var(--red)}
 .eq .line span:first-child small{display:block;font-size:12px;color:var(--mid);font-weight:500;margin-top:2px}
 .eq .line{align-items:center;gap:12px}
 .eq .line span:last-child{white-space:nowrap}
+.legesIn{width:120px;flex:none}
+.legesIn input{height:42px;text-align:right;padding-right:10px;font-weight:600}
 .eq .line.vkp{font-weight:800;font-size:16px;border-top:1.5px solid var(--ink);border-bottom:1.5px solid var(--ink);background:var(--grey2);padding-left:8px;padding-right:8px}
 .eq .line.tot{font-size:22px;font-weight:900;border-top:2px solid var(--ink);margin-top:2px}
 .eq .line.tot span:last-child{color:var(--red)}
@@ -157,7 +159,7 @@ details[open] summary::before{content:"– "}
     <div class="qty"><button id="qMin" aria-label="Minder">−</button><b id="qty">1</b><button id="qPlus" aria-label="Meer">+</button><span style="font-size:13px;color:var(--mid)">stuks · incl. btw, excl. leges</span></div>
     <div class="lines eq" style="margin-top:12px">
       <div class="line"><span><b>Verkoopprijs</b><small>incl. btw</small></span><span id="sNew">€ 799</span></div>
-      <div class="line"><span><b>+ Leges</b><small>kenteken</small></span><span id="sLeges">€ 0</span></div>
+      <div class="line"><span><b>+ Leges</b><small>kenteken, per stuk</small></span><span class="euro legesIn"><span>€</span><input type="text" id="legesIn" inputmode="decimal" value="0" aria-label="Leges per stuk" autocomplete="off"></span></div>
       <div class="line vkp"><span><b>= Totale verkoopprijs (VKP)</b></span><span id="sVkp">€ 799</span></div>
     </div>
   </section>
@@ -444,6 +446,7 @@ try{ const s = JSON.parse(localStorage.getItem('7even-inruil-set')||'null'); if(
 
 const $ = id => document.getElementById(id);
 const eur = n => '€ ' + Math.round(n).toLocaleString('nl-NL');
+const eurC = n => { const r=Math.round(n*100)/100; return '€ ' + r.toLocaleString('nl-NL',{minimumFractionDigits:Number.isInteger(r)?0:2,maximumFractionDigits:2}); };
 const st = {cond:'good', batt:'ok', engine:'single', rides:'yes', maint:'noproof', qty:1};
 
 // build selects/chips
@@ -463,7 +466,7 @@ function bindChips(id,key){
   });
 }
 bindChips('engine','engine'); bindChips('rides','rides'); bindChips('maint','maint'); bindChips('cond','cond');
-['brand','model','watt','mkt','km','ageY','ageM','charger','receipt','cust'].forEach(id=>{
+['legesIn','brand','model','watt','mkt','km','ageY','ageM','charger','receipt','cust'].forEach(id=>{
   $(id).addEventListener('input',calc); $(id).addEventListener('change',calc);
 });
 $('qMin').onclick=()=>{st.qty=Math.max(1,st.qty-1);calc();};
@@ -537,7 +540,8 @@ function calc(){
   t = Math.floor(t/r)*r;
   if(t < S.minTrade){ t = S.minTrade; rows.push([`Minimale inruilwaarde (gegarandeerd)`, eur(t)]); }
   const prem = t>0 ? S.premium : 0;
-  const leges = S.leges*st.qty;
+  const legesPer = Math.max(0, parseFloat(($('legesIn').value||'0').replace(',','.')) || 0);
+  const leges = legesPer*st.qty;
   const total = S.price*st.qty + leges;
   const pay = Math.max(0, total - t - prem);
 
@@ -545,16 +549,16 @@ function calc(){
   $('pprice').textContent = eur(S.price);
   $('qty').textContent = st.qty;
   $('rQty').textContent = st.qty>1 ? '× '+st.qty : '';
-  $('rNew').textContent = eur(S.price*st.qty); $('rLeges').textContent = eur(leges); $('rVkp').textContent = eur(total); $('sNew').textContent = eur(S.price*st.qty); $('sLeges').textContent = eur(leges); $('sVkp').textContent = eur(total); $('bNew').textContent = eur(total);
+  $('rNew').textContent = eur(S.price*st.qty); $('rLeges').textContent = eurC(leges); $('rVkp').textContent = eurC(total); $('sNew').textContent = eur(S.price*st.qty); $('sVkp').textContent = eurC(total); $('bNew').textContent = eurC(total);
   const mdl = ($('model').value||'').trim();
   $('rModel').textContent = brand[0] + (mdl?' '+mdl:'') + (watt?` · ${watt.toLocaleString('nl-NL')} W`:'');
   $('rTrade').textContent = eur(t); $('rTrade2').textContent = '− '+eur(t);
   $('rPremRow').style.display = prem? '' : 'none'; $('rPrem').textContent = '− '+eur(prem);
-  $('rPay').textContent = eur(pay);
-  $('bTrade').textContent = eur(t+prem); $('bPay').textContent = eur(pay);
+  $('rPay').textContent = eurC(pay);
+  $('bTrade').textContent = eur(t+prem); $('bPay').textContent = eurC(pay);
   const until = new Date(now.getTime()+14*864e5).toLocaleDateString('nl-NL',{day:'numeric',month:'long',year:'numeric'});
   $('disc').textContent = `Indicatie, geldig tot ${until}. De definitieve inruilwaarde volgt na inspectie in het 7EVEN Experience Centre in Mijdrecht. Prijzen incl. btw, leges apart vermeld.`;
-  last = {brand:brand[0], mdl, watt, mkt, np, km, mo, cond:c[1], engine:st.engine, t, prem, total, pay, until, market};
+  last = {brand:brand[0], mdl, watt, mkt, leges, np, km, mo, cond:c[1], engine:st.engine, t, prem, total, pay, until, market};
 }
 
 function toast(m){ const el=$('toast'); el.textContent=m; el.classList.add('show'); setTimeout(()=>el.classList.remove('show'),2200); }
@@ -566,11 +570,11 @@ $('copy').onclick = async ()=>{
     `Inruil: ${L.brand}${L.mdl?' '+L.mdl:''}, ${L.engine} engine${L.watt?' '+L.watt.toLocaleString('nl-NL')+' W':''}, ${L.km.toLocaleString('nl-NL')} km, ${Math.floor(L.mo/12)} jr ${L.mo%12} mnd, staat ${L.cond.toLowerCase()}, ${st.rides==='yes'?'rijdt':'rijdt niet'}, ${st.maint==='proof'?'onderhoud met bonnen':st.maint==='noproof'?'onderhoud zonder bonnen':'geen/onbekend onderhoud'}, ${$('charger').checked?'met':'zonder'} adapter`,
     '',
     `Verkoop 7EVEN 1st Edition${st.qty>1?' × '+st.qty:''}: ${eur(S.price*st.qty)} (incl. btw)`,
-    `Leges (kenteken): + ${eur(S.leges*st.qty)}`,
-    `= Totale verkoopprijs: ${eur(L.total)}`,
+    `Leges (kenteken): + ${eurC(L.leges)}`,
+    `= Totale verkoopprijs: ${eurC(L.total)}`,
     `Inruil: − ${eur(L.t)}`,
     L.prem? `Inruilpremie: − ${eur(L.prem)}` : null,
-    `= Bij te betalen: ${eur(L.pay)}`, '',
+    `= Bij te betalen: ${eurC(L.pay)}`, '',
     L.mkt? `Marktcheck: vergeleken met vraagprijs ${eur(L.mkt)} op Marktplaats.` : null,
     `Indicatie geldig tot ${L.until}, onder voorbehoud van inspectie.`,
     '7EVEN Experience Centre, Rendementsweg 12a, Mijdrecht · www.7evenrides.nl'
@@ -580,7 +584,7 @@ $('copy').onclick = async ()=>{
 };
 $('reset').onclick = ()=>{
   ['model','watt','mkt','km','cust'].forEach(id=>$(id).value='');
-  $('brand').value=DEF_BRAND; $('ageY').value=2; $('ageM').value=0;
+  $('legesIn').value=S.leges; $('brand').value=DEF_BRAND; $('ageY').value=2; $('ageM').value=0;
   ['charger','receipt'].forEach(id=>$(id).checked=true);
   st.cond='good'; st.batt='ok'; st.engine='single'; st.rides='yes'; st.maint='noproof'; st.qty=1;
   [['maint','maint'],['rides','rides'],['engine','engine'],['cond','cond']].forEach(([id,k])=>[...$(id).children].forEach(c=>c.classList.toggle('on',c.dataset.v===st[k])));
