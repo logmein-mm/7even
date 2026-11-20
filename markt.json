@@ -1,0 +1,439 @@
+{
+ "peildatum": "2026-11-20",
+ "bron": "Marktplaats, Back Market NL, MediaMarkt.nl, Voltwheel, Techpunt en NL-dealers; incl. btw",
+ "modellen": [
+  {
+   "merk": "Xiaomi",
+   "model": "Essential / 1S / M365 / Lite",
+   "zoek": "essential|1s|m365|lite|mi scooter|^$",
+   "gebruikt": [
+    80,
+    200
+   ],
+   "nieuw": "€389 – €459",
+   "bronnen": [
+    {
+     "naam": "Marktplaats: Xiaomi steps",
+     "url": "https://www.marktplaats.nl/l/fietsen-en-brommers/steps/q/xiaomi+step/"
+    },
+    {
+     "naam": "Voltwheel: nieuwprijzen Xiaomi",
+     "url": "https://www.voltwheel.nl/webshop/e-steps/alle-e-steps/"
+    }
+   ]
+  },
+  {
+   "merk": "Xiaomi",
+   "model": "Pro 2",
+   "zoek": "pro ?2(?!nd)",
+   "gebruikt": [
+    100,
+    240
+   ],
+   "refurbished": 468,
+   "nieuw": "€599",
+   "bronnen": [
+    {
+     "naam": "Marktplaats: Xiaomi Pro 2",
+     "url": "https://www.marktplaats.nl/l/fietsen-en-brommers/steps/q/xiaomi+pro+2/"
+    },
+    {
+     "naam": "Back Market NL: refurbished",
+     "url": "https://www.backmarket.nl/nl-nl/l/mobiliteit/0c75ff25-cdc2-4e82-a621-5b9f670b486d"
+    }
+   ]
+  },
+  {
+   "merk": "Xiaomi",
+   "model": "4 Pro / 4 Pro 2nd Gen",
+   "zoek": "4 ?pro|pro ?4",
+   "gebruikt": [
+    260,
+    450
+   ],
+   "nieuw": "€599,95",
+   "bronnen": [
+    {
+     "naam": "Marktplaats: Xiaomi 4 Pro",
+     "url": "https://www.marktplaats.nl/l/fietsen-en-brommers/q/xiaomi+pro+step/"
+    },
+    {
+     "naam": "Techpunt: Xiaomi 4 Pro",
+     "url": "https://www.techpunt.nl/en/xiaomi-electric-scooter-4-pro-european-version.html"
+    }
+   ]
+  },
+  {
+   "merk": "Segway-Ninebot",
+   "model": "E2 / E25 / ES2 / E3",
+   "zoek": "\\be ?2|e25|es ?2|es ?4|e45|\\be ?3",
+   "gebruikt": [
+    150,
+    225
+   ],
+   "refurbished": 302,
+   "nieuw": "€279 – €399",
+   "bronnen": [
+    {
+     "naam": "Marktplaats: Ninebot E2",
+     "url": "https://marktplaats.nl/l/fietsen-en-brommers/steps/q/segway+ninebot+e+"
+    },
+    {
+     "naam": "MediaMarkt: Ninebot E2 E II",
+     "url": "https://www.mediamarkt.nl/nl/product/_segway-ninebot-kickscooter-e2-e-ii-elektrische-step-zwart-1881582.html"
+    },
+    {
+     "naam": "Back Market NL: ES2",
+     "url": "https://www.backmarket.nl/nl-nl/l/elektrische-step/0a47a35a-eae8-452c-a821-ebc31a40e518"
+    }
+   ]
+  },
+  {
+   "merk": "Segway-Ninebot",
+   "model": "F2 / F25 / F30 / F40 / F3",
+   "zoek": "\\bf ?2|f25|f30|f40|\\bf ?3",
+   "gebruikt": [
+    190,
+    325
+   ],
+   "refurbished": 354,
+   "nieuw": "€429 – €679",
+   "bronnen": [
+    {
+     "naam": "Marktplaats: Ninebot F25",
+     "url": "https://www.marktplaats.nl/l/fietsen-en-brommers/steps/q/ninebot+f25e/"
+    },
+    {
+     "naam": "Back Market NL: F25E",
+     "url": "https://www.backmarket.nl/nl-nl/l/elektrische-step/0a47a35a-eae8-452c-a821-ebc31a40e518"
+    }
+   ]
+  },
+  {
+   "merk": "Segway-Ninebot",
+   "model": "Max G30",
+   "zoek": "g ?30",
+   "gebruikt": [
+    225,
+    545
+   ],
+   "refurbished": 509,
+   "nieuw": "€670 – €945",
+   "bronnen": [
+    {
+     "naam": "Marktplaats: Ninebot Max G30",
+     "url": "https://www.marktplaats.nl/l/fietsen-en-brommers/steps/q/ninebot+max+g30/"
+    },
+    {
+     "naam": "Back Market NL: Max G30LE",
+     "url": "https://www.backmarket.nl/nl-nl/l/elektrische-step/0a47a35a-eae8-452c-a821-ebc31a40e518"
+    }
+   ]
+  },
+  {
+   "merk": "Segway-Ninebot",
+   "model": "Max G2",
+   "zoek": "g ?2(?!\\d)",
+   "gebruikt": [
+    350,
+    600
+   ],
+   "nieuw": "€799",
+   "bronnen": [
+    {
+     "naam": "Marktplaats: Ninebot Max G2",
+     "url": "https://www.marktplaats.nl/q/ninebot+g2+max/"
+    },
+    {
+     "naam": "Voltwheel: Max G2E",
+     "url": "https://www.voltwheel.nl/webshop/e-steps/alle-e-steps/"
+    }
+   ]
+  },
+  {
+   "merk": "Segway-Ninebot",
+   "model": "Max G3 (E, zonder kenteken)",
+   "zoek": "g ?3(?! ?nl)",
+   "gebruikt": [
+    400,
+    750
+   ],
+   "nieuw": "€899",
+   "bronnen": [
+    {
+     "naam": "Marktplaats: Ninebot Max G3",
+     "url": "https://www.marktplaats.nl/q/ninebot+max/"
+    },
+    {
+     "naam": "MediaMarkt: Max G3 E",
+     "url": "https://www.mediamarkt.nl/nl/product/_segway-ninebot-kickscooter-max-g3-e-elektrische-step-zwart-1881586.html"
+    }
+   ]
+  },
+  {
+   "merk": "Segway-Ninebot",
+   "model": "Max G3 NL (gekentekend)",
+   "zoek": "g ?3 ?nl",
+   "nieuw": "€999",
+   "notitie": "Nog geen gebruikte exemplaren te koop; nieuwprijs als bovengrens.",
+   "bronnen": [
+    {
+     "naam": "MediaMarkt: Max G3 NL",
+     "url": "https://www.mediamarkt.nl/nl/product/_segway-max-g3-nl-elektrische-step-zwart-1914313.html"
+    }
+   ]
+  },
+  {
+   "merk": "Kukirin",
+   "model": "G2 Master",
+   "zoek": "master",
+   "gebruikt": [
+    450,
+    850
+   ],
+   "nieuw": "€850 – €999",
+   "bronnen": [
+    {
+     "naam": "Marktplaats: Kukirin G2 Master",
+     "url": "https://www.marktplaats.nl/q/kukurin/"
+    },
+    {
+     "naam": "Marktplaats: dealers G2 Master",
+     "url": "https://www.marktplaats.nl/l/fietsen-en-brommers/steps/q/elektrische+step+rotterdam/"
+    }
+   ]
+  },
+  {
+   "merk": "Kukirin",
+   "model": "G2 / G2 Pro / G3",
+   "zoek": "g ?2|g ?3|kirin",
+   "gebruikt": [
+    195,
+    450
+   ],
+   "nieuw": "€500",
+   "bronnen": [
+    {
+     "naam": "Marktplaats: Kukirin",
+     "url": "https://www.marktplaats.nl/q/kukurin/"
+    }
+   ]
+  },
+  {
+   "merk": "Kaabo",
+   "model": "Mantis 10 (dual)",
+   "zoek": "mantis|king|wolf|^$",
+   "gebruikt": [
+    700,
+    1350
+   ],
+   "bronnen": [
+    {
+     "naam": "Marktplaats: Kaabo",
+     "url": "https://www.marktplaats.nl/l/fietsen-en-brommers/steps/q/kaabo/"
+    }
+   ]
+  },
+  {
+   "merk": "Dualtron",
+   "model": "Mini / Popular / City / Thunder / Victor",
+   "zoek": ".",
+   "gebruikt": [
+    600,
+    1850
+   ],
+   "nieuw": "€1.400 – €1.899",
+   "bronnen": [
+    {
+     "naam": "Marktplaats: Dualtron",
+     "url": "https://www.marktplaats.nl/l/fietsen-en-brommers/steps/q/dualtron/"
+    },
+    {
+     "naam": "Marktplaats: Dualtron City (Easy-Ride)",
+     "url": "https://www.marktplaats.nl/q/dualtron/"
+    }
+   ]
+  },
+  {
+   "merk": "Vsett",
+   "model": "Vsett 9 / 9+",
+   "zoek": "\\b9",
+   "gebruikt": [
+    500,
+    950
+   ],
+   "nieuw": "€867 – €1.100",
+   "bronnen": [
+    {
+     "naam": "Marktplaats: Vsett 9",
+     "url": "https://www.marktplaats.nl/q/zero+9+step/"
+    }
+   ]
+  },
+  {
+   "merk": "Vsett",
+   "model": "Vsett 10+ / 10 Apex",
+   "zoek": "10|apex|^$",
+   "gebruikt": [
+    975,
+    1450
+   ],
+   "bronnen": [
+    {
+     "naam": "Marktplaats: Vsett",
+     "url": "https://www.marktplaats.nl/l/fietsen-en-brommers/steps/q/vsett/"
+    }
+   ]
+  },
+  {
+   "merk": "Navee",
+   "model": "N50 / N65 / GT3 / NT5",
+   "zoek": ".",
+   "gebruikt": [
+    200,
+    550
+   ],
+   "bronnen": [
+    {
+     "naam": "Marktplaats: Navee",
+     "url": "https://www.marktplaats.nl/l/fietsen-en-brommers/steps/q/step+volwassenen+elektrische/"
+    }
+   ]
+  },
+  {
+   "merk": "Pure Electric",
+   "model": "Air Go / Air 4 / Air 5 Pro",
+   "zoek": "(?!.*nl).*",
+   "gebruikt": [
+    100,
+    300
+   ],
+   "nieuw": "Air Pro+ NL €649",
+   "bronnen": [
+    {
+     "naam": "Marktplaats: Pure Air",
+     "url": "https://www.marktplaats.nl/l/fietsen-en-brommers/steps/q/elektrische+steps/"
+    }
+   ]
+  },
+  {
+   "merk": "NIU",
+   "model": "KQi1 / KQi2 / KQi3",
+   "zoek": ".",
+   "gebruikt": [
+    100,
+    350
+   ],
+   "nieuw": "KQi3 ±€649",
+   "bronnen": [
+    {
+     "naam": "Marktplaats: NIU",
+     "url": "https://www.marktplaats.nl/l/fietsen-en-brommers/steps/q/niu/"
+    }
+   ]
+  },
+  {
+   "merk": "iScooter",
+   "model": "i9 / i10 / W8 / ix3 / iX8",
+   "zoek": ".",
+   "gebruikt": [
+    175,
+    750
+   ],
+   "nieuw": "i9 €299 – i12 €499",
+   "bronnen": [
+    {
+     "naam": "Marktplaats: iScooter",
+     "url": "https://www.marktplaats.nl/l/fietsen-en-brommers/steps/q/elektrische+step+off+road/"
+    }
+   ]
+  },
+  {
+   "merk": "Kugoo",
+   "model": "S1 / G-Booster",
+   "zoek": ".",
+   "gebruikt": [
+    45,
+    750
+   ],
+   "nieuw": "G-Booster €1.125",
+   "bronnen": [
+    {
+     "naam": "Marktplaats: Kugoo",
+     "url": "https://www.marktplaats.nl/l/fietsen-en-brommers/steps/q/kugoo/"
+    }
+   ]
+  },
+  {
+   "merk": "Hiboy",
+   "model": "S2",
+   "zoek": ".",
+   "gebruikt": [
+    200,
+    260
+   ],
+   "bronnen": [
+    {
+     "naam": "Marktplaats: Hiboy S2",
+     "url": "https://www.marktplaats.nl/q/elektrische+step+ouxi/"
+    }
+   ]
+  },
+  {
+   "merk": "Joyor",
+   "model": "dual motor",
+   "zoek": ".",
+   "gebruikt": [
+    350,
+    450
+   ],
+   "bronnen": [
+    {
+     "naam": "Marktplaats: Joyor",
+     "url": "https://www.marktplaats.nl/l/fietsen-en-brommers/steps/q/achterwielaandrijving/"
+    }
+   ]
+  },
+  {
+   "merk": "Boyueda",
+   "model": "S5 (6000 W)",
+   "zoek": ".",
+   "gebruikt": [
+    950,
+    1100
+   ],
+   "bronnen": [
+    {
+     "naam": "Marktplaats: Boyueda S5",
+     "url": "https://www.marktplaats.nl/l/fietsen-en-brommers/steps/q/elektrische+step's/"
+    }
+   ]
+  },
+  {
+   "merk": "Selana Alpha (gekentekend)",
+   "model": "Alpha",
+   "zoek": ".",
+   "nieuw": "€1.900",
+   "notitie": "Nog geen gebruikte exemplaren te koop; nieuwprijs als bovengrens.",
+   "bronnen": [
+    {
+     "naam": "Marktplaats: Selana Alpha (dealer)",
+     "url": "https://www.marktplaats.nl/l/fietsen-en-brommers/steps/q/elektrische+step+legaal/"
+    }
+   ]
+  },
+  {
+   "merk": "Todimart",
+   "model": "G2",
+   "zoek": ".",
+   "nieuw": "€299 – €325",
+   "notitie": "Nieuw al voor ±€300 te koop; tweedehands waarde laag.",
+   "bronnen": [
+    {
+     "naam": "Marktplaats: Todimart G2",
+     "url": "https://www.marktplaats.nl/q/opvouwbare+elektrische+step/"
+    }
+   ]
+  }
+ ]
+}
