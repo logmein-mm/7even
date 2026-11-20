@@ -242,7 +242,7 @@ details[open] summary::before{content:"– "}
       <div class="line vkp"><span><b>= Totale verkoopprijs (VKP)</b></span><span id="rVkp">€ 799</span></div>
       <div class="line minus"><span><b>− Inruil</b><small id="rModel"></small></span><span id="rTrade2">− € 0</span></div>
       <div class="line minus" id="rPremRow"><span><b>− Inruilpremie</b></span><span id="rPrem">− € 0</span></div>
-      <div class="line tot"><span>= Bij te betalen</span><span id="rPay">€ 799</span></div>
+      <div class="line tot"><span id="rPayLbl">= Bij te betalen</span><span id="rPay">€ 799</span></div>
     </div>
     <span id="rTrade" hidden></span>
     <div class="mkt" id="mktBox"></div>
@@ -271,7 +271,7 @@ details[open] summary::before{content:"– "}
     <li><b>Correcties.</b> Een merkfactor (0,50 tot 1,00), dual engine <span data-s="dual" data-u="%" data-p="+"></span> (alleen als het vermogen onbekend is), kilometers boven <span data-s="kmYear" data-u=" km"></span> per jaar (<span data-s="kmPen" data-u="%"></span> per 1.000 km, maximaal <span data-s="kmMax" data-u="%"></span>), staat (×1,00 als nieuw tot ×0,25 slecht), rijdt niet (<span data-s="notRiding" data-u="%"></span>), onderhoud met bonnen (+<span data-s="maintProof" data-u="%"></span>) of geen/onbekend onderhoud (−<span data-s="maintNone" data-u="%"></span>), geen aankoopbewijs (−<span data-s="noReceipt" data-u="%"></span>), geen adapter (−<span data-s="noCharger"></span>). De uitkomst is de <b>marktwaarde</b>: wat de step particulier in Nederland ongeveer opbrengt.</li>
     <li><b>Marktvergelijking (automatisch).</b> Voor bekende merken en modellen kent de calculator de Nederlandse marktprijzen: tweedehands vraagprijzen, refurbished-prijzen en nieuwprijzen. De verwachte opbrengst is <span data-s="mktReal" data-u="%"></span> van de gemiddelde vraagprijs, gecorrigeerd voor staat en of de step rijdt. De taxatiewaarde is een afweging van twee methoden: het rekenmodel en de markt. Bij een exact herkend model telt de markt voor <span data-s="mktWeight" data-u="%"></span> mee, 10 procentpunt meer bij een smalle prijsrange en 10 minder bij een grote spreiding. Bij alleen merkniveau telt de markt voor 25% mee, bij weinig aanbod voor 40%. Daarnaast toetst de calculator het inruilbod: tussen <span data-s="bandLow" data-u="%"></span> en <span data-s="bandHigh" data-u="%"></span> van de marktopbrengst is in lijn met de markt.</li>
     <li><b>Inruilwaarde.</b> 7EVEN biedt <span data-s="trade" data-u="%"></span> van de marktwaarde. Het verschil dekt het controleren en opknappen, de garantie bij doorverkoop, de tijd tot verkoop en de marge. Afgerond naar beneden op <span data-s="round"></span>.</li>
-    <li><b>Grenzen.</b> De klant krijgt altijd minimaal <span data-s="minTrade"></span>, ook als de step geen waarde heeft, en maximaal <span data-s="maxTrade"></span> per step.</li>
+    <li><b>Grenzen.</b> De klant krijgt altijd minimaal <span data-s="minTrade"></span>, ook als de step geen waarde heeft,. Er is geen maximum: is de inruil meer waard dan de nieuwe 7EVEN, dan ontvangt de klant het verschil.</li>
   </ol>
   <h4>2. Waarom deze uitgangspunten</h4>
   <ul>
@@ -312,7 +312,7 @@ details[open] summary::before{content:"– "}
 <div class="bar"><div class="bar-in">
   <div><div class="k">VKP</div><div class="n" id="bNew">€ 799</div></div>
   <div style="margin-left:10px"><div class="k">− Inruil</div><div class="n r" id="bTrade">€ 0</div></div>
-  <div style="margin-left:10px"><div class="k">= Betalen</div><div class="n" id="bPay">€ 799</div></div>
+  <div style="margin-left:10px"><div class="k" id="bPayLbl">= Betalen</div><div class="n" id="bPay">€ 799</div></div>
   <button class="go" id="toRes">Voorstel</button>
 </div></div>
 
@@ -353,7 +353,6 @@ const DEFAULTS = {
   battWeak: 20,        // % aftrek accu verminderd
   battDead: 250,       // € aftrek accu defect
   premium: 0,         // € inruilpremie bij aankoop 1st Edition
-  maxTrade: 400,       // € maximale inruilwaarde per stuk
   minTrade: 100,       // € gegarandeerde minimale inruilwaarde
   round: 5,            // afronden naar beneden op €
   refSingle: 550,      // standaard nieuwprijs single engine als onbekend
@@ -478,7 +477,6 @@ const SETDEF = [
   ["leges","Leges (kenteken)","€ per stuk"],
   ["premium","Inruilpremie bij aankoop","€ per stuk"],
   ["minTrade","Minimale inruilwaarde","€ altijd, ook zonder waarde"],
-  ["maxTrade","Maximale inruilwaarde","€ per ingeruilde step"],
   ["trade","Inruilpercentage","% van marktwaarde"],
   ["Marktvergelijking NL",null],
   ["mktReal","Opbrengst t.o.v. gemiddelde vraagprijs","%"],
@@ -609,8 +607,7 @@ function calc(){
   $('refHint').textContent = rf ? (rf.exact ? `Marktreferentie gevonden: ${rf.r.b.replace(/ \(.*\)/,'')} ${rf.r.m}.` : `Geen exact model herkend; vergelijking op merkniveau. Kies een model uit de lijst voor een scherpere vergelijking.`) : 'Voor dit merk is geen Nederlandse marktreferentie gevonden; de taxatie volgt het model.';
   let t = market * S.trade/100;
   rows.push([`Inruil = ${S.trade}% van taxatiewaarde`, eur(t)]);
-  const capped = t > S.maxTrade;
-  if(capped){ t = S.maxTrade; rows.push([`Begrensd op maximum`, eur(t)]); }
+  const capped = false;
   const r = Math.max(1,S.round);
   t = Math.floor(t/r)*r;
   if(t < S.minTrade){ t = S.minTrade; rows.push([`Minimale inruilwaarde (gegarandeerd)`, eur(t)]); }
@@ -643,7 +640,7 @@ function calc(){
   const legesPer = Math.max(0, parseFloat(($('legesIn').value||'0').replace(',','.')) || 0);
   const leges = legesPer*st.qty;
   const total = S.price*st.qty + leges;
-  const pay = Math.max(0, total - t - prem);
+  const pay = total - t - prem;
 
   $('calc').innerHTML = rows.map(x=>`<div><span>${x[0]}</span><span>${x[1]}</span></div>`).join('');
   $('pprice').textContent = eur(S.price);
@@ -654,8 +651,9 @@ function calc(){
   $('rModel').textContent = brand[0] + (mdl?' '+mdl:'') + (watt?` · ${watt.toLocaleString('nl-NL')} W`:'');
   $('rTrade').textContent = eur(t); $('rTrade2').textContent = '− '+eur(t);
   $('rPremRow').style.display = prem? '' : 'none'; $('rPrem').textContent = '− '+eur(prem);
-  $('rPay').textContent = eurC(pay);
-  $('bTrade').textContent = eur(t+prem); $('bPay').textContent = eurC(pay);
+  $('rPayLbl').textContent = pay<0 ? '= Klant ontvangt' : '= Bij te betalen';
+  $('rPay').textContent = eurC(Math.abs(pay));
+  $('bTrade').textContent = eur(t+prem); $('bPay').textContent = eurC(Math.abs(pay)); $('bPayLbl').textContent = pay<0 ? '= Ontvangt' : '= Betalen';
   const until = new Date(now.getTime()+14*864e5).toLocaleDateString('nl-NL',{day:'numeric',month:'long',year:'numeric'});
   $('disc').textContent = `Indicatie, geldig tot ${until}. De definitieve inruilwaarde volgt na inspectie in het 7EVEN Experience Centre in Mijdrecht. Prijzen incl. btw, leges apart vermeld.`;
   last = {brand:brand[0], mdl, watt, leges, mk, np, km, mo, cond:c[1], engine:st.engine, t, prem, total, pay, until, market};
@@ -674,7 +672,7 @@ $('copy').onclick = async ()=>{
     `= Totale verkoopprijs: ${eurC(L.total)}`,
     `Inruil: − ${eur(L.t)}`,
     L.prem? `Inruilpremie: − ${eur(L.prem)}` : null,
-    `= Bij te betalen: ${eurC(L.pay)}`, '',
+    L.pay<0 ? `= Klant ontvangt: ${eurC(-L.pay)}` : `= Bij te betalen: ${eurC(L.pay)}`, '',
     L.mk? `Getoetst aan de Nederlandse markt (verwachte opbrengst ${eur(L.mk.real)}).` : null,
     `Indicatie geldig tot ${L.until}, onder voorbehoud van inspectie.`,
     '7EVEN Experience Centre, Rendementsweg 12a, Mijdrecht · www.7evenrides.nl'
@@ -714,7 +712,7 @@ function marketFor(brandName, mo, engine, condF, w){
   v *= ageFactor(mo) * b[1] * condF;
   return Math.max(0,v);
 }
-function tradeFor(m){ let t=Math.min(S.maxTrade, m*S.trade/100); t=Math.floor(t/Math.max(1,S.round))*Math.max(1,S.round); return Math.max(S.minTrade,t); }
+function tradeFor(m){ let t=m*S.trade/100; t=Math.floor(t/Math.max(1,S.round))*Math.max(1,S.round); return Math.max(S.minTrade,t); }
 function renderAppx(){
   document.querySelectorAll('#bijlage [data-s]').forEach(el=>{
     const k=el.dataset.s, u=el.dataset.u, pre=el.dataset.p||'';
