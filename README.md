@@ -7,7 +7,7 @@ Een verkoper taxeert de oude e-step en ziet direct het inruilvoorstel op de **7E
 Open `index.html` in een browser. Het is één losse pagina zonder installatie, gemaakt voor de telefoon (responsive) en in de 7EVEN-huisstijl.
 
 ## Velden
-- Merk (44 merken, o.a. Veeley, Selana Alpha/Nova, Kukirin), type (optioneel), single of dual engine
+- Merk (67 merken, aangevuld met merken die op Marktplaats voorkomen), type (optioneel), single of dual engine
 - Vermogen motoren totaal in watt, met controle op foute invoer (bijv. Kaabo King GT: 2× 1.100 W = 2.200 W)
 - Leeftijd in jaren en maanden, kilometerstand, kenteken / RDW
 - Rijdt / rijdt niet, staat ten opzichte van nieuw, adapter aanwezig, aankoopbewijs aanwezig
