@@ -19,7 +19,7 @@ Verkoop + leges = totale verkoopprijs (VKP) − inruil = bij te betalen
 ## Rekenregels (standaard)
 - Basiswaarde op basis van vermogen (350 W ±€550 … 2.000 W ±€1.360 … 5.000 W ±€2.470); zonder vermogen €550 single / €1.100 dual (7EVEN €799, Selana €1.900, StapStep €630)
 - Afschrijving 25% in jaar 1, daarna 18% per jaar
-- Inruilwaarde = 50% van de marktwaarde, minimaal €100 en maximaal €400
+- Inruilwaarde = 70% van de marktwaarde, minimaal €100 en maximaal €400
 - Alle bedragen incl. btw
 
 De waarden zijn aan te passen onder het tandwieltje (alleen bewaard op dat toestel).

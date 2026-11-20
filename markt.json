@@ -1,6 +1,6 @@
 {
  "peildatum": "2026-11-20",
- "bron": "Marktplaats, Back Market NL, MediaMarkt.nl, Voltwheel, Techpunt en NL-dealers; incl. btw",
+ "bron": "Marktplaats, Back Market NL, MediaMarkt.nl, Voltwheel, Techpunt, Fatdaddy en NL-dealers; incl. btw",
  "modellen": [
   {
    "merk": "Xiaomi",
@@ -216,6 +216,31 @@
     {
      "naam": "Marktplaats: Kukirin",
      "url": "https://www.marktplaats.nl/q/kukurin/"
+    }
+   ]
+  },
+  {
+   "merk": "Kaabo",
+   "model": "Mantis King GT",
+   "zoek": "king ?gt|mantis ?king",
+   "gebruikt": [
+    1100,
+    1400
+   ],
+   "nieuw": "€2.449 – €2.518",
+   "notitie": "Weinig NL-aanbod; gebruikt geschat op basis van NL-nieuwprijs en vergelijkbare advertenties.",
+   "bronnen": [
+    {
+     "naam": "Fatdaddy: Kaabo Mantis King GT",
+     "url": "https://www.fatdaddy.nl/product/kaabo-mantis-gt/"
+    },
+    {
+     "naam": "Kaabomantis.nl: King GT",
+     "url": "https://kaabomantis.nl/"
+    },
+    {
+     "naam": "Marktplaats: King GT Zwolle",
+     "url": "https://www.marktplaats.nl/l/fietsen-en-brommers/steps/q/step+met+vering/"
     }
    ]
   },
