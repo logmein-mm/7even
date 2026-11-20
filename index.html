@@ -336,19 +336,27 @@ const DEFAULTS = {
 };
 // [naam, merkfactor, standaard gekentekend/legaal]
 const BRAND_LIST = [
-  ["Apollo",0.90],["Aovo",0.60],["Bird / Lime (ex-deelstep)",0.50],["Denver",0.60],
-  ["Ducati",0.75],["Dualtron",0.95],["Egret",0.90],["E-twow",0.85],["Evercross",0.60],
-  ["Fiat",0.70],["Gotrax",0.60],["Hiboy",0.60],["Inmotion",0.90],["Inokim",0.90],
-  ["iScooter",0.60],["Jeep",0.70],["Joyor",0.75],["Kaabo",0.95],["Kick&Go",0.80],
-  ["Kickbike (gekentekend)",0.95,true],["Kugoo",0.60],["Kukirin",0.60],["Lamborghini / Platum",0.70],
-  ["Mercane",0.85],["Micro",0.90],["Navee",0.80],["Nilox",0.65],["NIU",0.90],
-  ["Pure Electric",0.90],["Razor",0.60],["Segway-Ninebot",0.95],
-  ["Selana Alpha (gekentekend)",1.00,true,1900],["Selana Nova (gekentekend)",1.00,true,1100],["SoFlow",0.80],["StapStep (trapondersteuning)",0.90,true,630],
-  ["Teverun",0.95],["Unagi",0.85],["Veeley (gekentekend)",0.95,true],["Vsett",0.85],["Xiaomi",0.85],["Zero",0.85]
+  ["Acer",0.60],["Aovo",0.60],["Apollo",0.90],["Aprilia",0.75],
+  ["Ausom",0.70],["Bird / Lime (ex-deelstep)",0.50],["Boyueda",0.60],["Denver",0.60],
+  ["Dualtron",0.95],["Ducati",0.75],["E-twow",0.85],["Egret",0.90],
+  ["Evercross",0.60],["Fat Wheelz",0.55],["Fiat",0.70],["Freeboy",0.55],
+  ["Gotrax",0.60],["Hiboy",0.60],["Ienyrid",0.55],["Inmotion",0.90],
+  ["Inokim",0.90],["iScooter",0.60],["Isinwheel",0.65],["Jeep",0.70],
+  ["Joyor",0.75],["Kaabo",0.95],["Kick&Go",0.80],["Kickbike (gekentekend)",0.95,true],
+  ["Kugoo",0.60],["Kukirin",0.60],["Lamborghini / Platum",0.70],["Mercane",0.85],
+  ["Micro",0.90],["Navee",0.80],["Nilox",0.65],["NIU",0.90],
+  ["OOK-TEK",0.55],["Pure Electric",0.90],["Razor",0.60],["Rollzone",0.55],
+  ["Segway-Ninebot",0.95],["Selana Alpha (gekentekend)",1.00,true,1900],["Selana Nova (gekentekend)",1.00,true,1100],["Smartgyro",0.65],
+  ["SoFlow",0.80],["StapStep (trapondersteuning)",0.90,true,630],["Stay-on",0.55],["Streetbooster",0.65],
+  ["Sunhood",0.55],["Suotu",0.55],["SXT",0.65],["Teverun",0.95],
+  ["Todimart",0.55],["Trikke (gekentekend)",0.85,true],["Unagi",0.85],["UrbanGlide",0.65],
+  ["Urbmob",0.80],["Veeley (gekentekend)",0.95,true],["Viking Choice / Megawheels",0.55],["Vsett",0.85],
+  ["Windgoo",0.55],["Wispeed",0.60],["Xiaomi",0.85],["Zero",0.85],
+  ["Zwheel",0.55]
 ];
 const BRANDS = [["7EVEN",1.00,true,799], ...BRAND_LIST, ["Ander A-merk",0.80], ["Budget / onbekend merk",0.60]];
 // merken met krachtige (performance) steps
-const PERF = ['Apollo','Dualtron','Egret','Inokim','Kaabo','Mercane','Teverun','Vsett','Zero','Kugoo','Kukirin','Joyor','Unagi'];
+const PERF = ['Apollo','Dualtron','Egret','Inokim','Kaabo','Mercane','Teverun','Vsett','Zero','Kugoo','Kukirin','Joyor','Unagi','Boyueda','Todimart','Ienyrid','Freeboy','Ausom','Isinwheel','Streetbooster'];
 // basiswaarde (nieuwprijsniveau NL, incl. btw) naar totaal vermogen
 const WATT_CURVE = [[250,450],[350,650],[500,800],[1000,1100],[2000,1600],[3000,2100],[5000,2900],[8000,3600]];
 function wattBase(w){
