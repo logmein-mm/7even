@@ -243,7 +243,7 @@ details[open] summary::before{content:"– "}
   <details><summary>Bekijk de onderbouwing en bronnen</summary>
   <h4>1. Rekenmethode in vijf stappen</h4>
   <ol>
-    <li><b>Basiswaarde.</b> Het nieuwprijsniveau in Nederland op basis van het totale motorvermogen: 250 W ±€450, 350 W ±€650, 500 W ±€800, 1.000 W ±€1.100, 2.000 W ±€1.600, 3.000 W ±€2.100, 5.000 W ±€2.900 (daartussen naar verhouding). Is het vermogen onbekend, dan geldt <span data-s="refSingle"></span> voor een single engine en <span data-s="refDual"></span> voor een dual engine. Voor merken met een vaste nieuwprijs geldt die prijs: 7EVEN €799, Selana €1.900, StapStep €630.</li>
+    <li><b>Basiswaarde.</b> Het nieuwprijsniveau in Nederland op basis van het totale motorvermogen: 250 W ±€450, 350 W ±€650, 500 W ±€800, 1.000 W ±€1.100, 2.000 W ±€1.600, 3.000 W ±€2.100, 5.000 W ±€2.900 (daartussen naar verhouding). Is het vermogen onbekend, dan geldt <span data-s="refSingle"></span> voor een single engine en <span data-s="refDual"></span> voor een dual engine. Voor merken met een vaste nieuwprijs geldt die prijs: 7EVEN €799, Selana Alpha €1.900, Selana Nova €1.100, StapStep €630.</li>
     <li><b>Afschrijving.</b> <span data-s="dropY1" data-u="%"></span> waardeverlies in het eerste jaar, daarna <span data-s="dropYn" data-u="%"></span> per jaar. De restwaarde is nooit lager dan <span data-s="floor" data-u="%"></span> van de basiswaarde.</li>
     <li><b>Correcties.</b> Een merkfactor (0,50 tot 1,00), dual engine <span data-s="dual" data-u="%" data-p="+"></span> (alleen als het vermogen onbekend is), kilometers boven <span data-s="kmYear" data-u=" km"></span> per jaar (<span data-s="kmPen" data-u="%"></span> per 1.000 km, maximaal <span data-s="kmMax" data-u="%"></span>), staat (×1,00 als nieuw tot ×0,25 slecht), rijdt niet (<span data-s="notRiding" data-u="%"></span>), geen kenteken (<span data-s="illegal" data-u="%"></span>), geen aankoopbewijs (−<span data-s="noReceipt" data-u="%"></span>), geen adapter (−<span data-s="noCharger"></span>). De uitkomst is de <b>marktwaarde</b>: wat de step particulier in Nederland ongeveer opbrengt.</li>
     <li><b>Inruilwaarde.</b> 7EVEN biedt <span data-s="trade" data-u="%"></span> van de marktwaarde. Het verschil dekt het controleren en opknappen, de garantie bij doorverkoop, de tijd tot verkoop en de marge. Afgerond naar beneden op <span data-s="round"></span>.</li>
@@ -340,15 +340,15 @@ const BRAND_LIST = [
   ["Ducati",0.75],["Dualtron",0.95],["Egret",0.90],["E-twow",0.85],["Evercross",0.60],
   ["Fiat",0.70],["Gotrax",0.60],["Hiboy",0.60],["Inmotion",0.90],["Inokim",0.90],
   ["iScooter",0.60],["Jeep",0.70],["Joyor",0.75],["Kaabo",0.95],["Kick&Go",0.80],
-  ["Kickbike (gekentekend)",0.95,true],["Kugoo",0.60],["Lamborghini / Platum",0.70],
+  ["Kickbike (gekentekend)",0.95,true],["Kugoo",0.60],["Kukirin",0.60],["Lamborghini / Platum",0.70],
   ["Mercane",0.85],["Micro",0.90],["Navee",0.80],["Nilox",0.65],["NIU",0.90],
   ["Pure Electric",0.90],["Razor",0.60],["Segway-Ninebot",0.95],
-  ["Selana (gekentekend)",1.00,true,1900],["SoFlow",0.80],["StapStep (trapondersteuning)",0.90,true,630],
-  ["Teverun",0.95],["Unagi",0.85],["Vsett",0.85],["Xiaomi",0.85],["Zero",0.85]
+  ["Selana Alpha (gekentekend)",1.00,true,1900],["Selana Nova (gekentekend)",1.00,true,1100],["SoFlow",0.80],["StapStep (trapondersteuning)",0.90,true,630],
+  ["Teverun",0.95],["Unagi",0.85],["Veeley (gekentekend)",0.95,true],["Vsett",0.85],["Xiaomi",0.85],["Zero",0.85]
 ];
 const BRANDS = [["7EVEN",1.00,true,799], ...BRAND_LIST, ["Ander A-merk",0.80], ["Budget / onbekend merk",0.60]];
 // merken met krachtige (performance) steps
-const PERF = ['Apollo','Dualtron','Egret','Inokim','Kaabo','Mercane','Teverun','Vsett','Zero','Kugoo','Joyor','Unagi'];
+const PERF = ['Apollo','Dualtron','Egret','Inokim','Kaabo','Mercane','Teverun','Vsett','Zero','Kugoo','Kukirin','Joyor','Unagi'];
 // basiswaarde (nieuwprijsniveau NL, incl. btw) naar totaal vermogen
 const WATT_CURVE = [[250,450],[350,650],[500,800],[1000,1100],[2000,1600],[3000,2100],[5000,2900],[8000,3600]];
 function wattBase(w){
