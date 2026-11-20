@@ -269,7 +269,7 @@ details[open] summary::before{content:"– "}
     <li><b>Basiswaarde.</b> De waarde in Nederland op basis van het totale motorvermogen: 250 W ±€380, 350 W ±€550, 500 W ±€680, 1.000 W ±€940, 2.000 W ±€1.360, 3.000 W ±€1.790, 5.000 W ±€2.470 (daartussen naar verhouding). Deze waarden liggen ongeveer 15% onder de nieuwprijs, omdat de meeste steps geen kenteken hebben (zie punt 2). Is het vermogen onbekend, dan geldt <span data-s="refSingle"></span> voor een single engine en <span data-s="refDual"></span> voor een dual engine. Voor merken met een vaste nieuwprijs geldt die prijs: 7EVEN €799, Selana Alpha €1.900, Selana Nova €1.100, StapStep €630.</li>
     <li><b>Afschrijving.</b> <span data-s="dropY1" data-u="%"></span> waardeverlies in het eerste jaar, daarna <span data-s="dropYn" data-u="%"></span> per jaar. De restwaarde is nooit lager dan <span data-s="floor" data-u="%"></span> van de basiswaarde.</li>
     <li><b>Correcties.</b> Een merkfactor (0,50 tot 1,00), dual engine <span data-s="dual" data-u="%" data-p="+"></span> (alleen als het vermogen onbekend is), kilometers boven <span data-s="kmYear" data-u=" km"></span> per jaar (<span data-s="kmPen" data-u="%"></span> per 1.000 km, maximaal <span data-s="kmMax" data-u="%"></span>), staat (×1,00 als nieuw tot ×0,25 slecht), rijdt niet (<span data-s="notRiding" data-u="%"></span>), onderhoud met bonnen (+<span data-s="maintProof" data-u="%"></span>) of geen/onbekend onderhoud (−<span data-s="maintNone" data-u="%"></span>), geen aankoopbewijs (−<span data-s="noReceipt" data-u="%"></span>), geen adapter (−<span data-s="noCharger"></span>). De uitkomst is de <b>marktwaarde</b>: wat de step particulier in Nederland ongeveer opbrengt.</li>
-    <li><b>Marktvergelijking (automatisch).</b> Voor bekende merken en modellen kent de calculator de Nederlandse marktprijzen: tweedehands vraagprijzen, refurbished-prijzen en nieuwprijzen. De verwachte opbrengst is <span data-s="mktReal" data-u="%"></span> van de gemiddelde vraagprijs, gecorrigeerd voor staat en of de step rijdt. Bij een herkend model telt die marktreferentie voor <span data-s="mktWeight" data-u="%"></span> mee in de marktwaarde. Daarnaast toetst de calculator het inruilbod: tussen <span data-s="bandLow" data-u="%"></span> en <span data-s="bandHigh" data-u="%"></span> van de marktopbrengst is in lijn met de markt.</li>
+    <li><b>Marktvergelijking (automatisch).</b> Voor bekende merken en modellen kent de calculator de Nederlandse marktprijzen: tweedehands vraagprijzen, refurbished-prijzen en nieuwprijzen. De verwachte opbrengst is <span data-s="mktReal" data-u="%"></span> van de gemiddelde vraagprijs, gecorrigeerd voor staat en of de step rijdt. De taxatiewaarde is een afweging van twee methoden: het rekenmodel en de markt. Bij een exact herkend model telt de markt voor <span data-s="mktWeight" data-u="%"></span> mee, 10 procentpunt meer bij een smalle prijsrange en 10 minder bij een grote spreiding. Bij alleen merkniveau telt de markt voor 25% mee, bij weinig aanbod voor 40%. Daarnaast toetst de calculator het inruilbod: tussen <span data-s="bandLow" data-u="%"></span> en <span data-s="bandHigh" data-u="%"></span> van de marktopbrengst is in lijn met de markt.</li>
     <li><b>Inruilwaarde.</b> 7EVEN biedt <span data-s="trade" data-u="%"></span> van de marktwaarde. Het verschil dekt het controleren en opknappen, de garantie bij doorverkoop, de tijd tot verkoop en de marge. Afgerond naar beneden op <span data-s="round"></span>.</li>
     <li><b>Grenzen.</b> De klant krijgt altijd minimaal <span data-s="minTrade"></span>, ook als de step geen waarde heeft, en maximaal <span data-s="maxTrade"></span> per step.</li>
   </ol>
@@ -345,8 +345,8 @@ const DEFAULTS = {
   maintNone: 10,       // % aftrek geen/onbekend onderhoud
   mktReal: 85,         // % van de gemiddelde vraagprijs dat een step echt opbrengt
   mktWeight: 50,       // % gewicht van de marktreferentie in de marktwaarde
-  bandLow: 35,         // inruil onder dit % van de marktopbrengst = laag
-  bandHigh: 65,        // inruil boven dit % van de marktopbrengst = hoog
+  bandLow: 50,         // inruil onder dit % van de marktopbrengst = laag
+  bandHigh: 85,        // inruil boven dit % van de marktopbrengst = hoog
   notRiding: 35,       // % van waarde als step niet rijdt
   noReceipt: 5,        // % aftrek zonder aankoopbewijs
   tyres: 40,           // € aftrek banden/remmen
@@ -482,7 +482,7 @@ const SETDEF = [
   ["trade","Inruilpercentage","% van marktwaarde"],
   ["Marktvergelijking NL",null],
   ["mktReal","Opbrengst t.o.v. gemiddelde vraagprijs","%"],
-  ["mktWeight","Gewicht marktreferentie in marktwaarde","%"],
+  ["mktWeight","Basisgewicht markt bij exact model","% (±10 naar spreiding)"],
   ["bandLow","Inruil laag onder","% van marktopbrengst"],
   ["bandHigh","Inruil hoog boven","% van marktopbrengst"],
   ["round","Afronden naar beneden op","€"],
@@ -578,49 +578,66 @@ function calc(){
   let market = v;
   const mdlTxt = ($('model').value||'').trim();
   const rf = refFor(brand[0], mdlTxt);
-  let mk = null;
+  // Methode 1: rekenmodel
+  const m1 = modelMarket;
+  rows.push(['<b>Methode 1 · Rekenmodel</b>', '<b>'+eur(m1)+'</b>']);
+  // Methode 2: markt (internet vraagprijzen -> verwachte koopprijs)
+  let mk = null, w = 0, why = '';
   if(rf && rf.r.used){
-    const mid=(rf.r.used[0]+rf.r.used[1])/2;
-    let real = mid*S.mktReal/100*(c[3]/0.85);
-    if(st.rides==='no') real *= S.notRiding/100;
-    mk = {mid, real};
-    rows.push(['<b>Taxatie volgens model</b>', '<b>'+eur(modelMarket)+'</b>']);
-    rows.push([`Marktreferentie NL ${rf.r.m}: gem. vraagprijs ${eur(mid)} × ${S.mktReal}%, gecorrigeerd voor staat`, eur(real)]);
-    if(rf.exact){
-      market = modelMarket*(1-S.mktWeight/100) + real*S.mktWeight/100;
-      rows.push([`<b>Marktwaarde</b> (${100-S.mktWeight}% model, ${S.mktWeight}% markt)`, '<b>'+eur(market)+'</b>']);
-    } else {
-      rows.push(['<b>Marktwaarde</b> (model; marktreferentie alleen op merkniveau)', '<b>'+eur(market)+'</b>']);
-    }
+    const lo=rf.r.used[0], hi=rf.r.used[1], mid=(lo+hi)/2;
+    const koop = mid*S.mktReal/100;                     // vraagprijs -> koopprijs
+    let m2 = koop*(c[3]/0.85);                          // gecorrigeerd voor staat (advertenties ≈ 'goed')
+    if(st.rides==='no') m2 *= S.notRiding/100;
+    const spread = lo>0 ? hi/lo : 3;
+    if(!rf.exact){ w = 25; why = 'alleen merkniveau bekend, markt telt beperkt mee'; }
+    else if(rf.r.note){ w = 40; why = 'weinig aanbod in NL, markt deels geschat'; }
+    else if(spread<=1.8){ w = Math.min(70, S.mktWeight+10); why = 'exact model met smalle prijsrange, markt is betrouwbaar'; }
+    else if(spread<=2.6){ w = S.mktWeight; why = 'exact model, gemiddelde prijsspreiding'; }
+    else { w = Math.max(30, S.mktWeight-10); why = 'exact model maar grote prijsspreiding, model telt zwaarder'; }
+    const diff = Math.abs(m2-m1)/Math.max(m1,m2)*100;
+    mk = {lo, hi, mid, koop, m2, w, why, diff, real:m2};
+    rows.push([`<b>Methode 2 · Markt NL</b>: vraagprijs ${eur(lo)}–${eur(hi)}, gem. ${eur(mid)}`, '']);
+    rows.push([`Vraagprijs → koopprijs (× ${S.mktReal}%)`, eur(koop)]);
+    rows.push([`Gecorrigeerd voor staat${st.rides==='no'?' en rijdt niet':''}`, '<b>'+eur(m2)+'</b>']);
+    market = m1*(1-w/100) + m2*w/100;
+    rows.push([`Afweging: ${100-w}% model, ${w}% markt (${why})`, '']);
+    rows.push(['<b>= Taxatiewaarde</b>', '<b>'+eur(market)+'</b>']);
   } else {
-    rows.push(['<b>Marktwaarde</b>', '<b>'+eur(market)+'</b>']);
+    rows.push(['Methode 2 · Markt NL: geen bruikbare vraagprijzen gevonden', '–']);
+    rows.push(['<b>= Taxatiewaarde</b> (100% model)', '<b>'+eur(market)+'</b>']);
   }
   $('refHint').textContent = rf ? (rf.exact ? `Marktreferentie gevonden: ${rf.r.b.replace(/ \(.*\)/,'')} ${rf.r.m}.` : `Geen exact model herkend; vergelijking op merkniveau. Kies een model uit de lijst voor een scherpere vergelijking.`) : 'Voor dit merk is geen Nederlandse marktreferentie gevonden; de taxatie volgt het model.';
   let t = market * S.trade/100;
-  rows.push([`Inruilpercentage ${S.trade}%`, eur(t)]);
-  if(t > S.maxTrade){ t = S.maxTrade; rows.push([`Begrensd op maximum`, eur(t)]); }
+  rows.push([`Inruil = ${S.trade}% van taxatiewaarde`, eur(t)]);
+  const capped = t > S.maxTrade;
+  if(capped){ t = S.maxTrade; rows.push([`Begrensd op maximum`, eur(t)]); }
   const r = Math.max(1,S.round);
   t = Math.floor(t/r)*r;
   if(t < S.minTrade){ t = S.minTrade; rows.push([`Minimale inruilwaarde (gegarandeerd)`, eur(t)]); }
   const prem = t>0 ? S.premium : 0;
-  let box = '';
-  if(rf){
-    const r=rf.r;
-    box += `<h5>Marktvergelijking Nederland${rf.exact?'':' (merkniveau)'}</h5><p class="muted">${r.b.replace(/ \(.*\)/,'')} ${r.m} · peildatum ${PEIL} · incl. btw</p>`;
-    if(r.used) box += `<div><span>Tweedehands vraagprijs</span><span>${eur(r.used[0])} – ${eur(r.used[1])}</span></div>`;
-    if(r.refurb) box += `<div><span>Refurbished NL vanaf</span><span>${eur(r.refurb)}</span></div>`;
-    if(r.nieuw) box += `<div><span>Nieuwprijs NL</span><span>${r.nieuw}</span></div>`;
-    if(mk){
-      box += `<div><span>Verwachte opbrengst bij verkoop</span><span>${eur(mk.real)}</span></div>`;
-      box += `<div><span>Taxatie model</span><span>${eur(modelMarket)}</span></div>`;
-      const pct = mk.real>0 ? t/mk.real*100 : 0;
-      box += `<div><span>Ons inruilbod${t===S.minTrade?' (gegarandeerd minimum)':''}</span><span>${eur(t)} (${Math.round(pct)}% van marktopbrengst)</span></div>`;
-      if(pct < S.bandLow) box += `<span class="verdict lo">Laag ten opzichte van de markt. Privé brengt deze step ongeveer ${eur(mk.real)} op; de klant kan het bod te laag vinden.</span>`;
-      else if(pct > S.bandHigh) box += `<span class="verdict hi">Hoog ten opzichte van de markt. Weinig ruimte voor opknappen en marge; beoordeel de step kritisch.</span>`;
-      else box += `<span class="verdict ok">In lijn met de markt: het bod ligt tussen ${S.bandLow}% en ${S.bandHigh}% van wat de step privé opbrengt.</span>`;
-    } else if(r.note){ box += `<span class="verdict lo">${r.note}</span>`; }
+  let box = `<h5>Taxatie in twee methoden</h5>`;
+  if(rf) box += `<p class="muted">${rf.r.b.replace(/ \(.*\)/,'')} ${rf.r.m==='merkniveau'?'':rf.r.m}${rf.exact?'':' (merkniveau)'} · marktdata ${PEIL} · incl. btw</p>`;
+  box += `<div><span>1 · Rekenmodel</span><span>${eur(m1)}</span></div>`;
+  if(mk){
+    box += `<div><span>2 · Markt: vraagprijs ${eur(mk.lo)} – ${eur(mk.hi)}</span><span>gem. ${eur(mk.mid)}</span></div>`;
+    box += `<div><span>&nbsp;&nbsp;&nbsp;verwachte koopprijs (−${100-S.mktReal}%, staat)</span><span>${eur(mk.m2)}</span></div>`;
+    if(rf.r.refurb) box += `<div><span>&nbsp;&nbsp;&nbsp;refurbished NL vanaf</span><span>${eur(rf.r.refurb)}</span></div>`;
+    if(rf.r.nieuw) box += `<div><span>&nbsp;&nbsp;&nbsp;nieuwprijs NL</span><span>${rf.r.nieuw}</span></div>`;
+    box += `<div><span>Afweging ${100-mk.w}% model / ${mk.w}% markt</span><span>${eur(market)}</span></div>`;
+    box += `<p class="muted">Reden: ${mk.why}.</p>`;
+    if(mk.diff>=35) box += `<span class="verdict lo">De methoden verschillen ${Math.round(mk.diff)}%. Controleer model, uitvoering en staat; de afweging dempt het verschil, maar beoordeel de step zelf.</span>`;
   } else {
-    box = `<h5>Marktvergelijking Nederland</h5><p class="muted">Voor dit merk is geen Nederlandse marktreferentie gevonden. De taxatie volgt het rekenmodel.</p>`;
+    box += `<div><span>2 · Markt NL</span><span>geen data</span></div><p class="muted">Taxatie volgt volledig het rekenmodel.</p>`;
+  }
+  box += `<div style="border-top:1px solid var(--grey);margin-top:6px;padding-top:6px"><span><b>Taxatiewaarde</b></span><span>${eur(market)}</span></div>`;
+  box += `<div><span><b>Inruilbod</b> (${S.trade}%${capped?', begrensd':''}${t===S.minTrade?', minimum':''})</span><span>${eur(t)}</span></div>`;
+  if(mk){
+    const pct = mk.m2>0 ? t/mk.m2*100 : 0;
+    if(t===S.minTrade && market*S.trade/100 < S.minTrade) box += `<span class="verdict lo">Gegarandeerd minimum: de step is minder waard dan ${eur(S.minTrade)}, maar de klant krijgt dit bedrag altijd.</span>`;
+    else if(capped) box += `<span class="verdict lo">Deze step is meer waard dan het maximale inruilbod. Privé brengt hij ongeveer ${eur(mk.m2)} op; de klant verkoopt hem waarschijnlijk liever zelf.</span>`;
+    else if(pct < S.bandLow) box += `<span class="verdict lo">Laag t.o.v. de markt (${Math.round(pct)}% van de koopprijs). De klant kan het bod te laag vinden.</span>`;
+    else if(pct > S.bandHigh) box += `<span class="verdict hi">Hoog t.o.v. de markt (${Math.round(pct)}% van de koopprijs). Weinig ruimte voor opknappen en marge.</span>`;
+    else box += `<span class="verdict ok">In lijn met de markt: ${Math.round(pct)}% van wat de step privé opbrengt.</span>`;
   }
   $('mktBox').innerHTML = box;
   const legesPer = Math.max(0, parseFloat(($('legesIn').value||'0').replace(',','.')) || 0);
