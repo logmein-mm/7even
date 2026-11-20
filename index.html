@@ -76,6 +76,13 @@ input:focus,select:focus{border-color:var(--red)}
 .eq .line{align-items:center;gap:12px}
 .eq .line span:last-child{white-space:nowrap}
 .legesIn{width:120px;flex:none}
+.mkt{margin-top:14px;border:1.5px solid var(--line);border-radius:4px;padding:12px 14px;font-size:13px;line-height:1.45}
+.mkt h5{font-size:12px;text-transform:uppercase;letter-spacing:.06em;margin-bottom:6px;color:var(--ink2)}
+.mkt div{display:flex;justify-content:space-between;gap:10px;padding:3px 0}
+.mkt div span:last-child{font-weight:700;white-space:nowrap}
+.mkt .verdict{display:block;margin-top:8px;padding:8px 10px;border-radius:4px;font-weight:600}
+.mkt .ok{background:#e8f4ea;color:#1d5e2a}.mkt .lo{background:#fff4e0;color:#7a4b00}.mkt .hi{background:#fbe9ea;color:#8f1d22}
+.mkt .muted{color:var(--mid);font-size:12px}
 .legesIn input{height:42px;text-align:right;padding-right:10px;font-weight:600}
 .eq .line.vkp{font-weight:800;font-size:16px;border-top:1.5px solid var(--ink);border-bottom:1.5px solid var(--ink);background:var(--grey2);padding-left:8px;padding-right:8px}
 .eq .line.tot{font-size:22px;font-weight:900;border-top:2px solid var(--ink);margin-top:2px}
@@ -173,7 +180,8 @@ details[open] summary::before{content:"– "}
       <select id="brand"></select></div>
 
     <div class="field"><label for="model">Type / model <span style="font-weight:500;text-transform:none;letter-spacing:0;color:var(--mid)">(optioneel)</span></label>
-      <input type="text" id="model" placeholder="bijv. Ninebot Max G30" autocomplete="off"></div>
+      <input type="text" id="model" list="modelList" placeholder="kies of typ, bijv. Max G30" autocomplete="off"><datalist id="modelList"></datalist>
+      <p class="hint" id="refHint"></p></div>
 
     <div class="field"><span class="flabel">Motor</span>
       <div class="chips col" id="engine">
@@ -217,10 +225,6 @@ details[open] summary::before{content:"– "}
         <button class="chip" data-v="none">Nee / onbekend<small>niet onderhouden</small></button>
       </div></div>
 
-    <div class="field"><label for="mkt">Marktcheck: vraagprijs vergelijkbare step</label>
-      <div class="euro"><span>€</span><input type="number" id="mkt" inputmode="numeric" min="0" step="5" placeholder="optioneel"></div>
-      <p class="hint">Zoek dezelfde step (zelfde model, leeftijd en staat) op Marktplaats en vul een gemiddelde vraagprijs in. <a id="mktLink" href="https://www.marktplaats.nl/l/fietsen-en-brommers/steps/" target="_blank" rel="noopener" style="color:var(--red);font-weight:700">Zoek op Marktplaats ›</a></p>
-      <div class="warn" id="mktWarn"></div></div>
 
     <div class="field">
       <div class="toggle"><div class="t">Adapter aanwezig<small>originele lader</small></div><label class="sw"><input type="checkbox" id="charger" checked><i></i></label></div>
@@ -241,6 +245,7 @@ details[open] summary::before{content:"– "}
       <div class="line tot"><span>= Bij te betalen</span><span id="rPay">€ 799</span></div>
     </div>
     <span id="rTrade" hidden></span>
+    <div class="mkt" id="mktBox"></div>
     <details id="calcBox"><summary>Zo is het berekend</summary><div class="calc" id="calc"></div></details>
     <div class="field"><label for="cust">Naam klant <span style="font-weight:500;text-transform:none;letter-spacing:0;color:var(--mid)">(optioneel)</span></label>
       <input type="text" id="cust" placeholder="voor op het voorstel" autocomplete="off"></div>
@@ -257,14 +262,14 @@ details[open] summary::before{content:"– "}
 <section class="card appx" id="bijlage">
   <span class="label">Bijlage verkoper</span>
   <h2>Zo komt de inruilprijs tot stand</h2>
-  <p class="sub">Onderbouwing op basis van de Nederlandse markt · marktcheck 20 november 2026 · alle bedragen incl. btw</p>
+  <p class="sub">Onderbouwing op basis van de Nederlandse markt · peildatum 20 november 2026 · alle bedragen incl. btw</p>
   <details><summary>Bekijk de onderbouwing en bronnen</summary>
   <h4>1. Rekenmethode in vijf stappen</h4>
   <ol>
     <li><b>Basiswaarde.</b> De waarde in Nederland op basis van het totale motorvermogen: 250 W ±€380, 350 W ±€550, 500 W ±€680, 1.000 W ±€940, 2.000 W ±€1.360, 3.000 W ±€1.790, 5.000 W ±€2.470 (daartussen naar verhouding). Deze waarden liggen ongeveer 15% onder de nieuwprijs, omdat de meeste steps geen kenteken hebben (zie punt 2). Is het vermogen onbekend, dan geldt <span data-s="refSingle"></span> voor een single engine en <span data-s="refDual"></span> voor een dual engine. Voor merken met een vaste nieuwprijs geldt die prijs: 7EVEN €799, Selana Alpha €1.900, Selana Nova €1.100, StapStep €630.</li>
     <li><b>Afschrijving.</b> <span data-s="dropY1" data-u="%"></span> waardeverlies in het eerste jaar, daarna <span data-s="dropYn" data-u="%"></span> per jaar. De restwaarde is nooit lager dan <span data-s="floor" data-u="%"></span> van de basiswaarde.</li>
     <li><b>Correcties.</b> Een merkfactor (0,50 tot 1,00), dual engine <span data-s="dual" data-u="%" data-p="+"></span> (alleen als het vermogen onbekend is), kilometers boven <span data-s="kmYear" data-u=" km"></span> per jaar (<span data-s="kmPen" data-u="%"></span> per 1.000 km, maximaal <span data-s="kmMax" data-u="%"></span>), staat (×1,00 als nieuw tot ×0,25 slecht), rijdt niet (<span data-s="notRiding" data-u="%"></span>), onderhoud met bonnen (+<span data-s="maintProof" data-u="%"></span>) of geen/onbekend onderhoud (−<span data-s="maintNone" data-u="%"></span>), geen aankoopbewijs (−<span data-s="noReceipt" data-u="%"></span>), geen adapter (−<span data-s="noCharger"></span>). De uitkomst is de <b>marktwaarde</b>: wat de step particulier in Nederland ongeveer opbrengt.</li>
-    <li><b>Marktcheck (aanbevolen).</b> De verkoper zoekt dezelfde step op Marktplaats en vult de vraagprijs in. Een step brengt meestal ongeveer <span data-s="mktReal" data-u="%"></span> van de vraagprijs op, en dat bedrag wordt de marktwaarde in plaats van de modelwaarde. Wijken model en markt <span data-s="mktDiff" data-u="%"></span> of meer van elkaar af, dan krijgt de verkoper een melding. Zo blijft het bod in lijn met wat de markt betaalt, ook bij merken of modellen die het model minder goed kent.</li>
+    <li><b>Marktvergelijking (automatisch).</b> Voor bekende merken en modellen kent de calculator de Nederlandse marktprijzen: tweedehands vraagprijzen, refurbished-prijzen en nieuwprijzen. De verwachte opbrengst is <span data-s="mktReal" data-u="%"></span> van de gemiddelde vraagprijs, gecorrigeerd voor staat en of de step rijdt. Bij een herkend model telt die marktreferentie voor <span data-s="mktWeight" data-u="%"></span> mee in de marktwaarde. Daarnaast toetst de calculator het inruilbod: tussen <span data-s="bandLow" data-u="%"></span> en <span data-s="bandHigh" data-u="%"></span> van de marktopbrengst is in lijn met de markt.</li>
     <li><b>Inruilwaarde.</b> 7EVEN biedt <span data-s="trade" data-u="%"></span> van de marktwaarde. Het verschil dekt het controleren en opknappen, de garantie bij doorverkoop, de tijd tot verkoop en de marge. Afgerond naar beneden op <span data-s="round"></span>.</li>
     <li><b>Grenzen.</b> De klant krijgt altijd minimaal <span data-s="minTrade"></span>, ook als de step geen waarde heeft, en maximaal <span data-s="maxTrade"></span> per step.</li>
   </ol>
@@ -273,17 +278,13 @@ details[open] summary::before{content:"– "}
     <li><b>Wetgeving drukt de waarde.</b> De meeste e-steps zonder trapondersteuning zijn niet goedgekeurd en mogen de weg niet op. De overgangsperiode voor het kenteken liep af op 1 juli 2026. Wie zonder geldig kenteken rijdt, riskeert een boete van €290 tot €490 en inbeslagname. Dat zit al in de lagere tweedehands prijzen. Daarom is er geen aparte aftrek voor een step zonder kenteken; die zit in de basiswaarde.</li>
     <li><b>Vermogen bepaalt de prijsklasse.</b> Steps van 350 W (Xiaomi 4 Pro, Ninebot G30/G3) kosten nieuw ±€600 tot €900. Krachtige dual-motorsteps zoals de Kaabo Mantis (2× 1.000 W) staan gebruikt nog voor €700 tot €1.350 op Marktplaats. Het vermogen zegt daardoor meer over de waarde dan alleen het merk. De calculator controleert of het ingevulde vermogen past bij het merk en het aantal motoren.</li>
     <li><b>Nieuwprijsniveau in Nederland.</b> Xiaomi Electric Scooter 4 Pro €599,95 (Techpunt), Segway Ninebot Max G3 E €899 (MediaMarkt), StapStep Pro €629,99 (bol.com), Pure Air6 Pro+ NL (gekentekend) €649,99, Segway Ninebot Max G3 NL (gekentekend) €999 incl. rijklaar maken, Selana Alpha (gekentekend) €1.900. Zonder vermogen gebruikt de calculator <span data-s="refSingle"></span> voor single en <span data-s="refDual"></span> voor dual.</li>
-    <li><b>Andere handelaren.</b> In Nederland publiceren step-handelaren geen vaste inruil- of inkoopprijzen. Fietsenwinkels en telefoonwinkels werken wel met inruil op basis van taxatie, waarbij de handelaar een marge houdt voor controle, opknappen en doorverkoop. Daarom is Marktplaats het vergelijkingspunt, en wordt het bod daar per step aan getoetst.</li>
+    <li><b>Andere handelaren.</b> In Nederland publiceren step-handelaren geen vaste inruil- of inkoopprijzen. Fietsenwinkels en telefoonwinkels werken wel met inruil op basis van taxatie, waarbij de handelaar een marge houdt voor controle, opknappen en doorverkoop. Daarom vergelijkt de calculator met wat steps in heel Nederland opbrengen: Marktplaats, refurbished-aanbod en dealers.</li>
     <li><b>Tweedehands prijzen in Nederland.</b> De afschrijving en de kentekenfactor zijn zo gekozen dat de marktwaarde in de calculator net onder de vraagprijzen op Marktplaats uitkomt. Vraagprijzen liggen meestal hoger dan wat een step echt opbrengt.</li>
   </ul>
-  <h4>3. Marktcheck: Marktplaats tegenover de calculator</h4>
-  <table>
-    <tr><th>Model (gebruikt)</th><th>Marktplaats, vraagprijs</th><th>Calculator, marktwaarde</th><th>Inruil</th></tr>
-    <tr><td>Xiaomi (Essential / Pro 2 / 4), 350 W, 3 jaar, gebruikt</td><td class="n">€80 – €240</td><td class="n" id="mc1"></td><td class="n" id="mc1t"></td></tr>
-    <tr><td>Segway Ninebot Max G30, 350 W, 2 jaar, goed</td><td class="n">€225 – €545<br><small>meestal €275 – €375</small></td><td class="n" id="mc2"></td><td class="n" id="mc2t"></td></tr>
-    <tr><td>Kaabo Mantis dual, 2.000 W, 1 jaar, goed</td><td class="n">€700 – €1.350</td><td class="n" id="mc3"></td><td class="n" id="mc3t"></td></tr>
-  </table>
-  <p class="note">Marktplaats laat vraagprijzen van particulieren zien, geen verkochte prijzen. Gebruik de calculator als richtlijn en beoordeel de step altijd zelf. Bij twijfel beslist de bedrijfsleider.</p>
+  <h4>3. Marktreferenties Nederland (peildatum <span id="peil">20 november 2026</span>)</h4>
+  <p>Gebaseerd op Marktplaats, refurbished-aanbod (Back Market NL), dealeradvertenties en nieuwprijzen bij Nederlandse winkels (MediaMarkt, Voltwheel, Techpunt). Belgische en buitenlandse prijzen zijn niet meegenomen.</p>
+  <table id="refTable"><tr><th>Merk en model</th><th>Tweedehands</th><th>Refurb.</th><th>Nieuw NL</th></tr></table>
+  <p class="note">Tweedehands bedragen zijn vraagprijzen van particulieren en handelaren, geen verkochte prijzen. Gebruik de calculator als richtlijn en beoordeel de step altijd zelf. Bij twijfel beslist de bedrijfsleider.</p>
   <h4>4. Bronnen (alleen Nederland)</h4>
   <ul>
     <li><a href="https://www.rijksoverheid.nl/themas/verkeer-en-vervoer/voertuigen-op-de-weg/bijzondere-bromfiets/elektrische-step">Rijksoverheid: regels elektrische step</a></li>
@@ -342,8 +343,10 @@ const DEFAULTS = {
   noCharger: 35,       // € aftrek zonder adapter
   maintProof: 5,       // % opslag onderhoud met bonnen
   maintNone: 10,       // % aftrek geen/onbekend onderhoud
-  mktReal: 85,         // % van Marktplaats-vraagprijs dat een step echt opbrengt
-  mktDiff: 30,         // % verschil model vs markt waarboven een waarschuwing komt
+  mktReal: 85,         // % van de gemiddelde vraagprijs dat een step echt opbrengt
+  mktWeight: 50,       // % gewicht van de marktreferentie in de marktwaarde
+  bandLow: 35,         // inruil onder dit % van de marktopbrengst = laag
+  bandHigh: 65,        // inruil boven dit % van de marktopbrengst = hoog
   notRiding: 35,       // % van waarde als step niet rijdt
   noReceipt: 5,        // % aftrek zonder aankoopbewijs
   tyres: 40,           // € aftrek banden/remmen
@@ -398,6 +401,63 @@ function wattCheck(w, brandName, engine){
   if(perf && engine==='dual' && w < 1000) return `${n} is laag voor een dual engine van ${brandName}. Deze steps hebben meestal 1.600 tot 6.000 W.`;
   return '';
 }
+// Marktreferenties Nederland, peildatum 20 november 2026, alle bedragen incl. btw.
+// used = vraagprijzen gebruikte exemplaren (Marktplaats e.a.), refurb = refurbished/dealer-occasion, nieuw = nieuwprijs NL webwinkels/dealers
+let REF = [
+ {b:'Xiaomi', m:'Essential / 1S / M365 / Lite', k:/essential|1s|m365|lite|mi scooter|^$/i, used:[80,200], nieuw:'€389 – €459', src:[['Marktplaats: Xiaomi steps','https://www.marktplaats.nl/l/fietsen-en-brommers/steps/q/xiaomi+step/'],['Voltwheel: nieuwprijzen Xiaomi','https://www.voltwheel.nl/webshop/e-steps/alle-e-steps/']]},
+ {b:'Xiaomi', m:'Pro 2', k:/pro ?2(?!nd)/i, used:[100,240], refurb:468, nieuw:'€599', src:[['Marktplaats: Xiaomi Pro 2','https://www.marktplaats.nl/l/fietsen-en-brommers/steps/q/xiaomi+pro+2/'],['Back Market NL: refurbished','https://www.backmarket.nl/nl-nl/l/mobiliteit/0c75ff25-cdc2-4e82-a621-5b9f670b486d']]},
+ {b:'Xiaomi', m:'4 Pro / 4 Pro 2nd Gen', k:/4 ?pro|pro ?4/i, used:[260,450], nieuw:'€599,95', src:[['Marktplaats: Xiaomi 4 Pro','https://www.marktplaats.nl/l/fietsen-en-brommers/q/xiaomi+pro+step/'],['Techpunt: Xiaomi 4 Pro','https://www.techpunt.nl/en/xiaomi-electric-scooter-4-pro-european-version.html']]},
+ {b:'Segway-Ninebot', m:'E2 / E25 / ES2 / E3', k:/\be ?2|e25|es ?2|es ?4|e45|\be ?3/i, used:[150,225], refurb:302, nieuw:'€279 – €399', src:[['Marktplaats: Ninebot E2','https://marktplaats.nl/l/fietsen-en-brommers/steps/q/segway+ninebot+e+'],['MediaMarkt: Ninebot E2 E II','https://www.mediamarkt.nl/nl/product/_segway-ninebot-kickscooter-e2-e-ii-elektrische-step-zwart-1881582.html'],['Back Market NL: ES2','https://www.backmarket.nl/nl-nl/l/elektrische-step/0a47a35a-eae8-452c-a821-ebc31a40e518']]},
+ {b:'Segway-Ninebot', m:'F2 / F25 / F30 / F40 / F3', k:/\bf ?2|f25|f30|f40|\bf ?3/i, used:[190,325], refurb:354, nieuw:'€429 – €679', src:[['Marktplaats: Ninebot F25','https://www.marktplaats.nl/l/fietsen-en-brommers/steps/q/ninebot+f25e/'],['Back Market NL: F25E','https://www.backmarket.nl/nl-nl/l/elektrische-step/0a47a35a-eae8-452c-a821-ebc31a40e518']]},
+ {b:'Segway-Ninebot', m:'Max G30', k:/g ?30/i, used:[225,545], refurb:509, nieuw:'€670 – €945', src:[['Marktplaats: Ninebot Max G30','https://www.marktplaats.nl/l/fietsen-en-brommers/steps/q/ninebot+max+g30/'],['Back Market NL: Max G30LE','https://www.backmarket.nl/nl-nl/l/elektrische-step/0a47a35a-eae8-452c-a821-ebc31a40e518']]},
+ {b:'Segway-Ninebot', m:'Max G2', k:/g ?2(?!\d)/i, used:[350,600], nieuw:'€799', src:[['Marktplaats: Ninebot Max G2','https://www.marktplaats.nl/q/ninebot+g2+max/'],['Voltwheel: Max G2E','https://www.voltwheel.nl/webshop/e-steps/alle-e-steps/']]},
+ {b:'Segway-Ninebot', m:'Max G3 (E, zonder kenteken)', k:/g ?3(?! ?nl)/i, used:[400,750], nieuw:'€899', src:[['Marktplaats: Ninebot Max G3','https://www.marktplaats.nl/q/ninebot+max/'],['MediaMarkt: Max G3 E','https://www.mediamarkt.nl/nl/product/_segway-ninebot-kickscooter-max-g3-e-elektrische-step-zwart-1881586.html']]},
+ {b:'Segway-Ninebot', m:'Max G3 NL (gekentekend)', k:/g ?3 ?nl/i, used:null, nieuw:'€999', note:'Nog geen gebruikte exemplaren te koop; nieuwprijs als bovengrens.', src:[['MediaMarkt: Max G3 NL','https://www.mediamarkt.nl/nl/product/_segway-max-g3-nl-elektrische-step-zwart-1914313.html']]},
+ {b:'Kukirin', m:'G2 Master', k:/master/i, used:[450,850], nieuw:'€850 – €999', src:[['Marktplaats: Kukirin G2 Master','https://www.marktplaats.nl/q/kukurin/'],['Marktplaats: dealers G2 Master','https://www.marktplaats.nl/l/fietsen-en-brommers/steps/q/elektrische+step+rotterdam/']]},
+ {b:'Kukirin', m:'G2 / G2 Pro / G3', k:/g ?2|g ?3|kirin/i, used:[195,450], nieuw:'€500', src:[['Marktplaats: Kukirin','https://www.marktplaats.nl/q/kukurin/']]},
+ {b:'Kaabo', m:'Mantis 10 (dual)', k:/mantis|king|wolf|^$/i, used:[700,1350], src:[['Marktplaats: Kaabo','https://www.marktplaats.nl/l/fietsen-en-brommers/steps/q/kaabo/']]},
+ {b:'Dualtron', m:'Mini / Popular / City / Thunder / Victor', k:/./i, used:[600,1850], nieuw:'€1.400 – €1.899', src:[['Marktplaats: Dualtron','https://www.marktplaats.nl/l/fietsen-en-brommers/steps/q/dualtron/'],['Marktplaats: Dualtron City (Easy-Ride)','https://www.marktplaats.nl/q/dualtron/']]},
+ {b:'Vsett', m:'Vsett 9 / 9+', k:/\b9/i, used:[500,950], nieuw:'€867 – €1.100', src:[['Marktplaats: Vsett 9','https://www.marktplaats.nl/q/zero+9+step/']]},
+ {b:'Vsett', m:'Vsett 10+ / 10 Apex', k:/10|apex|^$/i, used:[975,1450], src:[['Marktplaats: Vsett','https://www.marktplaats.nl/l/fietsen-en-brommers/steps/q/vsett/']]},
+ {b:'Navee', m:'N50 / N65 / GT3 / NT5', k:/./i, used:[200,550], src:[['Marktplaats: Navee','https://www.marktplaats.nl/l/fietsen-en-brommers/steps/q/step+volwassenen+elektrische/']]},
+ {b:'Pure Electric', m:'Air Go / Air 4 / Air 5 Pro', k:/(?!.*nl).*/i, used:[100,300], nieuw:'Air Pro+ NL €649', src:[['Marktplaats: Pure Air','https://www.marktplaats.nl/l/fietsen-en-brommers/steps/q/elektrische+steps/']]},
+ {b:'NIU', m:'KQi1 / KQi2 / KQi3', k:/./i, used:[100,350], nieuw:'KQi3 ±€649', src:[['Marktplaats: NIU','https://www.marktplaats.nl/l/fietsen-en-brommers/steps/q/niu/']]},
+ {b:'iScooter', m:'i9 / i10 / W8 / ix3 / iX8', k:/./i, used:[175,750], nieuw:'i9 €299 – i12 €499', src:[['Marktplaats: iScooter','https://www.marktplaats.nl/l/fietsen-en-brommers/steps/q/elektrische+step+off+road/']]},
+ {b:'Kugoo', m:'S1 / G-Booster', k:/./i, used:[45,750], nieuw:'G-Booster €1.125', src:[['Marktplaats: Kugoo','https://www.marktplaats.nl/l/fietsen-en-brommers/steps/q/kugoo/']]},
+ {b:'Hiboy', m:'S2', k:/./i, used:[200,260], src:[['Marktplaats: Hiboy S2','https://www.marktplaats.nl/q/elektrische+step+ouxi/']]},
+ {b:'Joyor', m:'dual motor', k:/./i, used:[350,450], src:[['Marktplaats: Joyor','https://www.marktplaats.nl/l/fietsen-en-brommers/steps/q/achterwielaandrijving/']]},
+ {b:'Boyueda', m:'S5 (6000 W)', k:/./i, used:[950,1100], src:[['Marktplaats: Boyueda S5',"https://www.marktplaats.nl/l/fietsen-en-brommers/steps/q/elektrische+step's/"]]},
+ {b:'Selana Alpha (gekentekend)', m:'Alpha', k:/./i, used:null, nieuw:'€1.900', note:'Nog geen gebruikte exemplaren te koop; nieuwprijs als bovengrens.', src:[['Marktplaats: Selana Alpha (dealer)','https://www.marktplaats.nl/l/fietsen-en-brommers/steps/q/elektrische+step+legaal/']]},
+ {b:'Todimart', m:'G2', k:/./i, used:null, nieuw:'€299 – €325', note:'Nieuw al voor ±€300 te koop; tweedehands waarde laag.', src:[['Marktplaats: Todimart G2','https://www.marktplaats.nl/q/opvouwbare+elektrische+step/']]}
+];
+
+let PEIL = '20 november 2026';
+function loadMarkt(){
+  try{
+    fetch('markt.json?t='+Date.now(),{cache:'no-store'}).then(r=>r.ok?r.json():null).then(d=>{
+      if(!d||!Array.isArray(d.modellen)||!d.modellen.length) return;
+      REF.length=0;
+      d.modellen.forEach(m=>REF.push({b:m.merk,m:m.model,k:new RegExp(m.zoek||'.','i'),used:m.gebruikt||null,refurb:m.refurbished||null,nieuw:m.nieuw||null,note:m.notitie||null,src:(m.bronnen||[]).map(x=>[x.naam,x.url])}));
+      if(d.peildatum){ const dt=new Date(d.peildatum); PEIL = isNaN(dt)?d.peildatum:dt.toLocaleDateString('nl-NL',{day:'numeric',month:'long',year:'numeric'}); }
+      fillModels(); calc();
+    }).catch(()=>{});
+  }catch(e){}
+}
+function refFor(brandName, model){
+  const list = REF.filter(r=>r.b===brandName);
+  if(!list.length) return null;
+  const txt=(model||'').trim();
+  const hit = list.find(r=> txt ? r.k.test(txt) : r.k.test(''));
+  if(hit) return {r:hit, exact:true};
+  if(list.length===1) return {r:list[0], exact:!txt};
+  const used=list.filter(r=>r.used);
+  if(!used.length) return {r:list[0], exact:false};
+  return {r:{b:brandName, m:'merkniveau', used:[Math.min(...used.map(r=>r.used[0])), Math.max(...used.map(r=>r.used[1]))], src:[].concat(...used.map(r=>r.src))}, exact:false};
+}
+function fillModels(){
+  const b=BRANDS[+$('brand').value][0];
+  $('modelList').innerHTML = REF.filter(r=>r.b===b).map(r=>`<option value="${r.m}">`).join('');
+}
 const DEF_BRAND = BRANDS.findIndex(b=>b[0]==="Segway-Ninebot");
 const CONDS = [
   ["new","Als nieuw","geen sporen",1.00],
@@ -419,8 +479,11 @@ const SETDEF = [
   ["minTrade","Minimale inruilwaarde","€ altijd, ook zonder waarde"],
   ["maxTrade","Maximale inruilwaarde","€ per ingeruilde step"],
   ["trade","Inruilpercentage","% van marktwaarde"],
-  ["mktReal","Opbrengst t.o.v. vraagprijs Marktplaats","%"],
-  ["mktDiff","Waarschuwing bij verschil model/markt","% of meer"],
+  ["Marktvergelijking NL",null],
+  ["mktReal","Opbrengst t.o.v. gemiddelde vraagprijs","%"],
+  ["mktWeight","Gewicht marktreferentie in marktwaarde","%"],
+  ["bandLow","Inruil laag onder","% van marktopbrengst"],
+  ["bandHigh","Inruil hoog boven","% van marktopbrengst"],
   ["round","Afronden naar beneden op","€"],
   ["Motor en basiswaarde",null],
   ["refSingle","Basiswaarde single engine","€ nieuwprijs-niveau"],
@@ -465,8 +528,8 @@ function bindChips(id,key){
     calc();
   });
 }
-bindChips('engine','engine'); bindChips('rides','rides'); bindChips('maint','maint'); bindChips('cond','cond');
-['legesIn','brand','model','watt','mkt','km','ageY','ageM','charger','receipt','cust'].forEach(id=>{
+bindChips('engine','engine'); bindChips('rides','rides'); $('brand').addEventListener('change',fillModels); bindChips('maint','maint'); bindChips('cond','cond');
+['legesIn','brand','model','watt','km','ageY','ageM','charger','receipt','cust'].forEach(id=>{
   $(id).addEventListener('input',calc); $(id).addEventListener('change',calc);
 });
 $('qMin').onclick=()=>{st.qty=Math.max(1,st.qty-1);calc();};
@@ -512,27 +575,26 @@ function calc(){
   v = Math.max(0,v);
   const modelMarket = v;
   let market = v;
-  const mkt = Math.max(0, +$('mkt').value || 0);
   const mdlTxt = ($('model').value||'').trim();
-  $('mktLink').href = 'https://www.marktplaats.nl/l/fietsen-en-brommers/steps/q/' + encodeURIComponent((brand[0].replace(/ \(.*\)/,'') + ' ' + mdlTxt).trim().toLowerCase()).replace(/%20/g,'+') + '/';
-  let mmsg = '';
-  if(mkt>0){
-    const real = mkt*S.mktReal/100;
-    rows.push(['<b>Marktwaarde volgens model</b>', '<b>'+eur(modelMarket)+'</b>']);
-    rows.push([`Marktcheck: vraagprijs ${eur(mkt)} × ${S.mktReal}%`, eur(real)]);
-    const diff = modelMarket>0 ? (real-modelMarket)/modelMarket*100 : 100;
-    if(Math.abs(diff) >= S.mktDiff){
-      mmsg = diff>0
-        ? `De markt ligt ${Math.round(diff)}% hoger dan het model. De calculator rekent nu met de marktprijs. Check of de advertenties echt vergelijkbaar zijn (model, leeftijd, staat).`
-        : `De markt ligt ${Math.round(-diff)}% lager dan het model. De calculator rekent nu met de marktprijs, zodat 7EVEN niet te veel betaalt.`;
+  const rf = refFor(brand[0], mdlTxt);
+  let mk = null;
+  if(rf && rf.r.used){
+    const mid=(rf.r.used[0]+rf.r.used[1])/2;
+    let real = mid*S.mktReal/100*(c[3]/0.85);
+    if(st.rides==='no') real *= S.notRiding/100;
+    mk = {mid, real};
+    rows.push(['<b>Taxatie volgens model</b>', '<b>'+eur(modelMarket)+'</b>']);
+    rows.push([`Marktreferentie NL ${rf.r.m}: gem. vraagprijs ${eur(mid)} × ${S.mktReal}%, gecorrigeerd voor staat`, eur(real)]);
+    if(rf.exact){
+      market = modelMarket*(1-S.mktWeight/100) + real*S.mktWeight/100;
+      rows.push([`<b>Marktwaarde</b> (${100-S.mktWeight}% model, ${S.mktWeight}% markt)`, '<b>'+eur(market)+'</b>']);
+    } else {
+      rows.push(['<b>Marktwaarde</b> (model; marktreferentie alleen op merkniveau)', '<b>'+eur(market)+'</b>']);
     }
-    market = real;
-    rows.push(['<b>Marktwaarde (marktcheck)</b>', '<b>'+eur(market)+'</b>']);
   } else {
     rows.push(['<b>Marktwaarde</b>', '<b>'+eur(market)+'</b>']);
   }
-  $('mktWarn').innerHTML = mmsg ? '<b>Model en markt lopen uiteen</b>'+mmsg : '';
-  $('mktWarn').classList.toggle('show', !!mmsg);
+  $('refHint').textContent = rf ? (rf.exact ? `Marktreferentie gevonden: ${rf.r.b.replace(/ \(.*\)/,'')} ${rf.r.m}.` : `Geen exact model herkend; vergelijking op merkniveau. Kies een model uit de lijst voor een scherpere vergelijking.`) : 'Voor dit merk is geen Nederlandse marktreferentie gevonden; de taxatie volgt het model.';
   let t = market * S.trade/100;
   rows.push([`Inruilpercentage ${S.trade}%`, eur(t)]);
   if(t > S.maxTrade){ t = S.maxTrade; rows.push([`Begrensd op maximum`, eur(t)]); }
@@ -540,6 +602,26 @@ function calc(){
   t = Math.floor(t/r)*r;
   if(t < S.minTrade){ t = S.minTrade; rows.push([`Minimale inruilwaarde (gegarandeerd)`, eur(t)]); }
   const prem = t>0 ? S.premium : 0;
+  let box = '';
+  if(rf){
+    const r=rf.r;
+    box += `<h5>Marktvergelijking Nederland${rf.exact?'':' (merkniveau)'}</h5><p class="muted">${r.b.replace(/ \(.*\)/,'')} ${r.m} · peildatum ${PEIL} · incl. btw</p>`;
+    if(r.used) box += `<div><span>Tweedehands vraagprijs</span><span>${eur(r.used[0])} – ${eur(r.used[1])}</span></div>`;
+    if(r.refurb) box += `<div><span>Refurbished NL vanaf</span><span>${eur(r.refurb)}</span></div>`;
+    if(r.nieuw) box += `<div><span>Nieuwprijs NL</span><span>${r.nieuw}</span></div>`;
+    if(mk){
+      box += `<div><span>Verwachte opbrengst bij verkoop</span><span>${eur(mk.real)}</span></div>`;
+      box += `<div><span>Taxatie model</span><span>${eur(modelMarket)}</span></div>`;
+      const pct = mk.real>0 ? t/mk.real*100 : 0;
+      box += `<div><span>Ons inruilbod${t===S.minTrade?' (gegarandeerd minimum)':''}</span><span>${eur(t)} (${Math.round(pct)}% van marktopbrengst)</span></div>`;
+      if(pct < S.bandLow) box += `<span class="verdict lo">Laag ten opzichte van de markt. Privé brengt deze step ongeveer ${eur(mk.real)} op; de klant kan het bod te laag vinden.</span>`;
+      else if(pct > S.bandHigh) box += `<span class="verdict hi">Hoog ten opzichte van de markt. Weinig ruimte voor opknappen en marge; beoordeel de step kritisch.</span>`;
+      else box += `<span class="verdict ok">In lijn met de markt: het bod ligt tussen ${S.bandLow}% en ${S.bandHigh}% van wat de step privé opbrengt.</span>`;
+    } else if(r.note){ box += `<span class="verdict lo">${r.note}</span>`; }
+  } else {
+    box = `<h5>Marktvergelijking Nederland</h5><p class="muted">Voor dit merk is geen Nederlandse marktreferentie gevonden. De taxatie volgt het rekenmodel.</p>`;
+  }
+  $('mktBox').innerHTML = box;
   const legesPer = Math.max(0, parseFloat(($('legesIn').value||'0').replace(',','.')) || 0);
   const leges = legesPer*st.qty;
   const total = S.price*st.qty + leges;
@@ -558,7 +640,7 @@ function calc(){
   $('bTrade').textContent = eur(t+prem); $('bPay').textContent = eurC(pay);
   const until = new Date(now.getTime()+14*864e5).toLocaleDateString('nl-NL',{day:'numeric',month:'long',year:'numeric'});
   $('disc').textContent = `Indicatie, geldig tot ${until}. De definitieve inruilwaarde volgt na inspectie in het 7EVEN Experience Centre in Mijdrecht. Prijzen incl. btw, leges apart vermeld.`;
-  last = {brand:brand[0], mdl, watt, mkt, leges, np, km, mo, cond:c[1], engine:st.engine, t, prem, total, pay, until, market};
+  last = {brand:brand[0], mdl, watt, leges, mk, np, km, mo, cond:c[1], engine:st.engine, t, prem, total, pay, until, market};
 }
 
 function toast(m){ const el=$('toast'); el.textContent=m; el.classList.add('show'); setTimeout(()=>el.classList.remove('show'),2200); }
@@ -575,7 +657,7 @@ $('copy').onclick = async ()=>{
     `Inruil: − ${eur(L.t)}`,
     L.prem? `Inruilpremie: − ${eur(L.prem)}` : null,
     `= Bij te betalen: ${eurC(L.pay)}`, '',
-    L.mkt? `Marktcheck: vergeleken met vraagprijs ${eur(L.mkt)} op Marktplaats.` : null,
+    L.mk? `Getoetst aan de Nederlandse markt (verwachte opbrengst ${eur(L.mk.real)}).` : null,
     `Indicatie geldig tot ${L.until}, onder voorbehoud van inspectie.`,
     '7EVEN Experience Centre, Rendementsweg 12a, Mijdrecht · www.7evenrides.nl'
   ].filter(x=>x!==null).join('\n');
@@ -583,7 +665,7 @@ $('copy').onclick = async ()=>{
   catch(e){ const ta=document.createElement('textarea'); ta.value=txt; document.body.appendChild(ta); ta.select(); try{document.execCommand('copy');toast('Voorstel gekopieerd');}catch(_){toast('Kopiëren niet gelukt');} ta.remove(); }
 };
 $('reset').onclick = ()=>{
-  ['model','watt','mkt','km','cust'].forEach(id=>$(id).value='');
+  ['model','watt','km','cust'].forEach(id=>$(id).value=''); fillModels();
   $('legesIn').value=S.leges; $('brand').value=DEF_BRAND; $('ageY').value=2; $('ageM').value=0;
   ['charger','receipt'].forEach(id=>$(id).checked=true);
   st.cond='good'; st.batt='ok'; st.engine='single'; st.rides='yes'; st.maint='noproof'; st.qty=1;
@@ -620,9 +702,10 @@ function renderAppx(){
     const k=el.dataset.s, u=el.dataset.u, pre=el.dataset.p||'';
     el.textContent = u ? pre + S[k].toLocaleString('nl-NL') + u : eur(S[k]);
   });
-  const rows=[['mc1','Xiaomi',36,'single',0.70,350],['mc2','Segway-Ninebot',24,'single',0.85,350],['mc3','Kaabo',12,'dual',0.85,2000]];
-  rows.forEach(([id,b,mo,e,c,w])=>{ const m=marketFor(b,mo,e,c,w); $(id).textContent=eur(m); $(id+'t').textContent=eur(tradeFor(m)); });
+  $('peil').textContent = PEIL;
+  $('refTable').innerHTML = '<tr><th>Merk en model</th><th>Tweedehands</th><th>Refurb.</th><th>Nieuw NL</th></tr>' + REF.map(r=>`<tr><td><b>${r.b.replace(/ \(.*\)/,'')}</b> ${r.m}<br><small>${r.src.map(x=>`<a href="${x[1]}" target="_blank" rel="noopener">${x[0]}</a>`).join(' · ')}</small></td><td class="n">${r.used?eur(r.used[0])+' – '+eur(r.used[1]):'–'}</td><td class="n">${r.refurb?eur(r.refurb):'–'}</td><td class="n">${r.nieuw||'–'}</td></tr>`).join('');
 }
+fillModels(); loadMarkt();
 try{ if(window.matchMedia('(min-width:720px)').matches) $('calcBox').open = true; }catch(e){}
 const _calc = calc; calc = function(){ _calc(); renderAppx(); };
 calc();

@@ -11,7 +11,7 @@ Open `index.html` in een browser. Het is één losse pagina zonder installatie, 
 - Vermogen motoren totaal in watt, met controle op foute invoer (bijv. Kaabo King GT: 2× 1.100 W = 2.200 W)
 - Leeftijd in jaren en maanden, kilometerstand
 - Rijdt / rijdt niet, staat ten opzichte van nieuw, onderhoud (met/zonder bonnen), adapter aanwezig, aankoopbewijs aanwezig
-- Marktcheck: vraagprijs van een vergelijkbare step op Marktplaats; het bod wordt daaraan getoetst
+- Automatische marktvergelijking NL per model (tweedehands, refurbished, nieuw) uit `markt.json`; het inruilbod wordt daaraan getoetst
 
 ## Voorstel
 Verkoop + leges = totale verkoopprijs (VKP) − inruil = bij te betalen
@@ -24,3 +24,6 @@ Verkoop + leges = totale verkoopprijs (VKP) − inruil = bij te betalen
 
 De waarden zijn aan te passen onder het tandwieltje (alleen bewaard op dat toestel).
 De volledige onderbouwing met Nederlandse bronnen staat in de bijlage onderaan de pagina.
+
+## Marktdata
+`markt.json` bevat de Nederlandse marktreferenties per merk/model (incl. btw) met peildatum en bronnen. De pagina laadt dit bestand bij het openen; als het ontbreekt, gebruikt ze de ingebouwde set.
