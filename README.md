@@ -14,7 +14,7 @@ Open `index.html` in een browser. Het is één losse pagina zonder installatie, 
 - Marktcheck: vraagprijs van een vergelijkbare step op Marktplaats; het bod wordt daaraan getoetst
 
 ## Voorstel
-Verkoop − inruil = bij te betalen
+Verkoop + leges = totale verkoopprijs (VKP) − inruil = bij te betalen
 
 ## Rekenregels (standaard)
 - Basiswaarde op basis van vermogen (350 W ±€550 … 2.000 W ±€1.360 … 5.000 W ±€2.470); zonder vermogen €550 single / €1.100 dual (7EVEN €799, Selana €1.900, StapStep €630)
