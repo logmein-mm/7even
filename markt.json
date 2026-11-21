@@ -1,5 +1,5 @@
 {
- "peildatum": "2026-11-20",
+ "peildatum": "2026-11-21",
  "bron": "Marktplaats, Back Market NL, MediaMarkt.nl, Voltwheel, Techpunt, Fatdaddy en NL-dealers; incl. btw",
  "modellen": [
   {
@@ -10,7 +10,9 @@
     80,
     200
    ],
+   "refurbished": null,
    "nieuw": "€389 – €459",
+   "notitie": null,
    "bronnen": [
     {
      "naam": "Marktplaats: Xiaomi steps",
@@ -32,6 +34,7 @@
    ],
    "refurbished": 468,
    "nieuw": "€599",
+   "notitie": null,
    "bronnen": [
     {
      "naam": "Marktplaats: Xiaomi Pro 2",
@@ -51,7 +54,9 @@
     260,
     450
    ],
+   "refurbished": null,
    "nieuw": "€599,95",
+   "notitie": null,
    "bronnen": [
     {
      "naam": "Marktplaats: Xiaomi 4 Pro",
@@ -73,6 +78,7 @@
    ],
    "refurbished": 302,
    "nieuw": "€279 – €399",
+   "notitie": null,
    "bronnen": [
     {
      "naam": "Marktplaats: Ninebot E2",
@@ -98,6 +104,7 @@
    ],
    "refurbished": 354,
    "nieuw": "€429 – €679",
+   "notitie": null,
    "bronnen": [
     {
      "naam": "Marktplaats: Ninebot F25",
@@ -119,6 +126,7 @@
    ],
    "refurbished": 509,
    "nieuw": "€670 – €945",
+   "notitie": null,
    "bronnen": [
     {
      "naam": "Marktplaats: Ninebot Max G30",
@@ -138,7 +146,9 @@
     350,
     600
    ],
+   "refurbished": null,
    "nieuw": "€799",
+   "notitie": null,
    "bronnen": [
     {
      "naam": "Marktplaats: Ninebot Max G2",
@@ -158,7 +168,9 @@
     400,
     750
    ],
+   "refurbished": null,
    "nieuw": "€899",
+   "notitie": null,
    "bronnen": [
     {
      "naam": "Marktplaats: Ninebot Max G3",
@@ -174,6 +186,8 @@
    "merk": "Segway-Ninebot",
    "model": "Max G3 NL (gekentekend)",
    "zoek": "g ?3 ?nl",
+   "gebruikt": null,
+   "refurbished": null,
    "nieuw": "€999",
    "notitie": "Nog geen gebruikte exemplaren te koop; nieuwprijs als bovengrens.",
    "bronnen": [
@@ -191,7 +205,9 @@
     450,
     850
    ],
+   "refurbished": null,
    "nieuw": "€850 – €999",
+   "notitie": null,
    "bronnen": [
     {
      "naam": "Marktplaats: Kukirin G2 Master",
@@ -211,7 +227,9 @@
     195,
     450
    ],
+   "refurbished": null,
    "nieuw": "€500",
+   "notitie": null,
    "bronnen": [
     {
      "naam": "Marktplaats: Kukirin",
@@ -227,6 +245,7 @@
     1100,
     1400
    ],
+   "refurbished": null,
    "nieuw": "€2.449 – €2.518",
    "notitie": "Weinig NL-aanbod; gebruikt geschat op basis van NL-nieuwprijs en vergelijkbare advertenties.",
    "bronnen": [
@@ -252,10 +271,31 @@
     700,
     1350
    ],
+   "refurbished": null,
+   "nieuw": null,
+   "notitie": null,
    "bronnen": [
     {
      "naam": "Marktplaats: Kaabo",
      "url": "https://www.marktplaats.nl/l/fietsen-en-brommers/steps/q/kaabo/"
+    }
+   ]
+  },
+  {
+   "merk": "Dualtron",
+   "model": "X Limited / X2",
+   "zoek": "\\bx ?(2|ltd|limited)\\b|x-?limited",
+   "gebruikt": [
+    3250,
+    3250
+   ],
+   "refurbished": null,
+   "nieuw": null,
+   "notitie": "Weinig NL-aanbod: 1 advertentie op Marktplaats (nov 2026); markt deels geschat.",
+   "bronnen": [
+    {
+     "naam": "Marktplaats: Dualtron X Limited (€3.250)",
+     "url": "https://www.marktplaats.nl/v/fietsen-en-brommers/steps/m2466191146-dualtron-x-limited-edition-e-step"
     }
    ]
   },
@@ -267,7 +307,9 @@
     600,
     1850
    ],
+   "refurbished": null,
    "nieuw": "€1.400 – €1.899",
+   "notitie": null,
    "bronnen": [
     {
      "naam": "Marktplaats: Dualtron",
@@ -287,7 +329,9 @@
     500,
     950
    ],
+   "refurbished": null,
    "nieuw": "€867 – €1.100",
+   "notitie": null,
    "bronnen": [
     {
      "naam": "Marktplaats: Vsett 9",
@@ -303,6 +347,9 @@
     975,
     1450
    ],
+   "refurbished": null,
+   "nieuw": null,
+   "notitie": null,
    "bronnen": [
     {
      "naam": "Marktplaats: Vsett",
@@ -318,6 +365,9 @@
     200,
     550
    ],
+   "refurbished": null,
+   "nieuw": null,
+   "notitie": null,
    "bronnen": [
     {
      "naam": "Marktplaats: Navee",
@@ -333,7 +383,9 @@
     100,
     300
    ],
+   "refurbished": null,
    "nieuw": "Air Pro+ NL €649",
+   "notitie": null,
    "bronnen": [
     {
      "naam": "Marktplaats: Pure Air",
@@ -349,7 +401,9 @@
     100,
     350
    ],
+   "refurbished": null,
    "nieuw": "KQi3 ±€649",
+   "notitie": null,
    "bronnen": [
     {
      "naam": "Marktplaats: NIU",
@@ -365,7 +419,9 @@
     175,
     750
    ],
+   "refurbished": null,
    "nieuw": "i9 €299 – i12 €499",
+   "notitie": null,
    "bronnen": [
     {
      "naam": "Marktplaats: iScooter",
@@ -381,7 +437,9 @@
     45,
     750
    ],
+   "refurbished": null,
    "nieuw": "G-Booster €1.125",
+   "notitie": null,
    "bronnen": [
     {
      "naam": "Marktplaats: Kugoo",
@@ -397,6 +455,9 @@
     200,
     260
    ],
+   "refurbished": null,
+   "nieuw": null,
+   "notitie": null,
    "bronnen": [
     {
      "naam": "Marktplaats: Hiboy S2",
@@ -412,6 +473,9 @@
     350,
     450
    ],
+   "refurbished": null,
+   "nieuw": null,
+   "notitie": null,
    "bronnen": [
     {
      "naam": "Marktplaats: Joyor",
@@ -427,6 +491,9 @@
     950,
     1100
    ],
+   "refurbished": null,
+   "nieuw": null,
+   "notitie": null,
    "bronnen": [
     {
      "naam": "Marktplaats: Boyueda S5",
@@ -438,6 +505,8 @@
    "merk": "Selana Alpha (gekentekend)",
    "model": "Alpha",
    "zoek": ".",
+   "gebruikt": null,
+   "refurbished": null,
    "nieuw": "€1.900",
    "notitie": "Nog geen gebruikte exemplaren te koop; nieuwprijs als bovengrens.",
    "bronnen": [
@@ -451,6 +520,8 @@
    "merk": "Todimart",
    "model": "G2",
    "zoek": ".",
+   "gebruikt": null,
+   "refurbished": null,
    "nieuw": "€299 – €325",
    "notitie": "Nieuw al voor ±€300 te koop; tweedehands waarde laag.",
    "bronnen": [
