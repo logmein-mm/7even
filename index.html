@@ -274,14 +274,17 @@ details[open] summary::before{content:"– "}
   <details><summary>Bekijk de onderbouwing en bronnen</summary>
   <h4>1. Rekenmethode in vijf stappen</h4>
   <ol>
-    <li><b>Basiswaarde.</b> De waarde in Nederland op basis van het totale motorvermogen: 250 W ±€380, 350 W ±€550, 500 W ±€680, 1.000 W ±€940, 2.000 W ±€1.360, 3.000 W ±€1.790, 5.000 W ±€2.470 (daartussen naar verhouding). Deze waarden liggen ongeveer 15% onder de nieuwprijs, omdat de meeste steps geen kenteken hebben (zie punt 2). Is het vermogen onbekend, dan geldt <span data-s="refSingle"></span> voor een single engine en <span data-s="refDual"></span> voor een dual engine. Voor merken met een vaste nieuwprijs geldt die prijs: 7EVEN €799, Selana Alpha €1.900, Selana Nova €1.100, StapStep €630.</li>
+    <li><b>Basiswaarde.</b> De waarde in Nederland op basis van het totale motorvermogen: 250 W ±€380, 350 W ±€550, 500 W ±€680, 1.000 W ±€940, 2.000 W ±€1.360, 3.000 W ±€1.790, 4.000 W ±€2.600, 5.000 W ±€3.100, 6.000 W ±€3.600, 8.000 W ±€4.400 (daartussen naar verhouding). Deze waarden liggen ongeveer 15% onder de nieuwprijs, omdat de meeste steps geen kenteken hebben (zie punt 2). Is het vermogen onbekend, dan geldt <span data-s="refSingle"></span> voor een single engine en <span data-s="refDual"></span> voor een dual engine. Voor merken met een vaste nieuwprijs geldt die prijs: 7EVEN €799, Selana Alpha €1.900, Selana Nova €1.100, StapStep €630.</li>
     <li><b>Afschrijving.</b> <span data-s="dropY1" data-u="%"></span> waardeverlies in het eerste jaar, daarna <span data-s="dropYn" data-u="%"></span> per jaar. De restwaarde is nooit lager dan <span data-s="floor" data-u="%"></span> van de basiswaarde.</li>
-    <li><b>Correcties.</b> Een merkfactor (0,50 tot 1,00), dual engine <span data-s="dual" data-u="%" data-p="+"></span> (alleen als het vermogen onbekend is), kilometers boven <span data-s="kmYear" data-u=" km"></span> per jaar (<span data-s="kmPen" data-u="%"></span> per 1.000 km, maximaal <span data-s="kmMax" data-u="%"></span>), staat (×1,00 als nieuw tot ×0,25 slecht), rijdt niet (<span data-s="notRiding" data-u="%"></span>), onderhoud met bonnen (+<span data-s="maintProof" data-u="%"></span>) of geen/onbekend onderhoud (−<span data-s="maintNone" data-u="%"></span>), geen aankoopbewijs (−<span data-s="noReceipt" data-u="%"></span>), geen adapter (−<span data-s="noCharger"></span>). De uitkomst is de <b>marktwaarde</b>: wat de step particulier in Nederland ongeveer opbrengt.</li>
+    <li><b>Correcties.</b> Een merkfactor per merkklasse (zie de tabel hieronder), dual engine <span data-s="dual" data-u="%" data-p="+"></span> (alleen als het vermogen onbekend is), kilometers boven <span data-s="kmYear" data-u=" km"></span> per jaar (<span data-s="kmPen" data-u="%"></span> per 1.000 km, maximaal <span data-s="kmMax" data-u="%"></span>), staat (×1,00 als nieuw tot ×0,25 slecht), rijdt niet (<span data-s="notRiding" data-u="%"></span>), onderhoud met bonnen (+<span data-s="maintProof" data-u="%"></span>) of geen/onbekend onderhoud (−<span data-s="maintNone" data-u="%"></span>), geen aankoopbewijs (−<span data-s="noReceipt" data-u="%"></span>), geen adapter (−<span data-s="noCharger"></span>). De uitkomst is de <b>marktwaarde</b>: wat de step particulier in Nederland ongeveer opbrengt.</li>
     <li><b>Marktvergelijking (automatisch).</b> Voor bekende merken en modellen kent de calculator de Nederlandse marktprijzen: tweedehands vraagprijzen, refurbished-prijzen en nieuwprijzen. De verwachte opbrengst is <span data-s="mktReal" data-u="%"></span> van de gemiddelde vraagprijs, gecorrigeerd voor staat en of de step rijdt. De taxatiewaarde is een afweging van twee methoden: het rekenmodel en de markt. Bij een exact herkend model telt de markt voor <span data-s="mktWeight" data-u="%"></span> mee, 10 procentpunt meer bij een smalle prijsrange en 10 minder bij een grote spreiding. Bij alleen merkniveau telt de markt voor 25% mee, bij weinig aanbod voor 40%. Daarnaast toetst de calculator het inruilbod: tussen <span data-s="bandLow" data-u="%"></span> en <span data-s="bandHigh" data-u="%"></span> van de marktopbrengst is in lijn met de markt.</li>
     <li><b>Inruilwaarde.</b> 7EVEN biedt <span data-s="trade" data-u="%"></span> van de marktwaarde. Het verschil dekt het controleren en opknappen, de garantie bij doorverkoop, de tijd tot verkoop en de marge. Afgerond naar beneden op <span data-s="round"></span>.</li>
-    <li><b>Grenzen.</b> De klant krijgt altijd minimaal <span data-s="minTrade"></span>, ook als de step geen waarde heeft,. Er is geen maximum: is de inruil meer waard dan de nieuwe 7EVEN, dan ontvangt de klant het verschil.</li>
+    <li><b>Grenzen.</b> De klant krijgt altijd minimaal <span data-s="minTrade"></span>, ook als de step geen waarde heeft. Er is geen maximum: is de inruil meer waard dan de nieuwe 7EVEN, dan ontvangt de klant het verschil.</li>
       <li><b>Bod verkoper.</b> De verkoper kan het voorstel overschrijven met een eigen inruilbod. De calculator toont dan het verschil met het voorstel en toetst het bod aan de markt. De klant ziet alleen het uiteindelijke bod.</li>
   </ol>
+  <h4>Merkklassen</h4>
+  <p>Elk merk valt in één van vijf klassen, van premium performance tot onbekende no-name steps. De klasse bepaalt de merkfactor. Een klasse 1-step houdt zijn waarde het best vast; een no-name step is bij doorverkoop het minst waard en heeft vaak geen dealer of onderdelen in Nederland.</p>
+  <table id="classTable"></table>
   <h4>2. Waarom deze uitgangspunten</h4>
   <ul>
     <li><b>Wetgeving drukt de waarde.</b> De meeste e-steps zonder trapondersteuning zijn niet goedgekeurd en mogen de weg niet op. De overgangsperiode voor het kenteken liep af op 1 juli 2026. Wie zonder geldig kenteken rijdt, riskeert een boete van €290 tot €490 en inbeslagname. Dat zit al in de lagere tweedehands prijzen. Daarom is er geen aparte aftrek voor een step zonder kenteken; die zit in de basiswaarde.</li>
@@ -366,33 +369,85 @@ const DEFAULTS = {
   round: 5,            // afronden naar beneden op €
   refSingle: 550,      // standaard nieuwprijs single engine als onbekend
   refDual: 1100,       // standaard nieuwprijs dual engine als onbekend
-  dual: 5             // % extra waarde dual engine
+  dual: 5,            // % extra waarde dual engine
+  kl1: 1.00, kl2: 0.90, kl3: 0.75, kl4: 0.60, kl5: 0.50   // merkfactor per klasse
 };
-// [naam, merkfactor, standaard gekentekend/legaal]
+// [naam, merkklasse 1-5, standaard gekentekend/legaal, vaste nieuwprijs]
 const BRAND_LIST = [
-  ["Acer",0.60],["Aovo",0.60],["Apollo",0.90],["Aprilia",0.75],
-  ["Ausom",0.70],["Bird / Lime (ex-deelstep)",0.50],["Boyueda",0.60],["Denver",0.60],
-  ["Dualtron",0.95],["Ducati",0.75],["E-twow",0.85],["Egret",0.90],
-  ["Evercross",0.60],["Fat Wheelz",0.55],["Fiat",0.70],["Freeboy",0.55],
-  ["Gotrax",0.60],["Hiboy",0.60],["Ienyrid",0.55],["Inmotion",0.90],
-  ["Inokim",0.90],["iScooter",0.60],["Isinwheel",0.65],["Jeep",0.70],
-  ["Joyor",0.75],["Kaabo",0.95],["Kick&Go",0.80],["Kickbike (gekentekend)",0.95,true],
-  ["Kugoo",0.60],["Kukirin",0.60],["Lamborghini / Platum",0.70],["Mercane",0.85],
-  ["Micro",0.90],["Navee",0.80],["Nilox",0.65],["NIU",0.90],
-  ["OOK-TEK",0.55],["Pure Electric",0.90],["Razor",0.60],["Rollzone",0.55],
-  ["Segway-Ninebot",0.95],["Selana Alpha (gekentekend)",1.00,true,1900],["Selana Nova (gekentekend)",1.00,true,1100],["Smartgyro",0.65],
-  ["SoFlow",0.80],["StapStep (trapondersteuning)",0.90,true,630],["Stay-on",0.55],["Streetbooster",0.65],
-  ["Sunhood",0.55],["Suotu",0.55],["SXT",0.65],["Teverun",0.95],
-  ["Todimart",0.55],["Trikke (gekentekend)",0.85,true],["Unagi",0.85],["UrbanGlide",0.65],
-  ["Urbmob",0.80],["Veeley (gekentekend)",0.95,true],["Viking Choice / Megawheels",0.55],["Vsett",0.85],
-  ["Windgoo",0.55],["Wispeed",0.60],["Xiaomi",0.85],["Zero",0.85],
-  ["Zwheel",0.55]
+  ["Acer",4],
+  ["Aovo",4],
+  ["Apollo",1],
+  ["Aprilia",3],
+  ["Ausom",3],
+  ["Bird / Lime (ex-deelstep)",5],
+  ["Boyueda",4],
+  ["Denver",4],
+  ["Dualtron",1],
+  ["Ducati",3],
+  ["E-twow",2],
+  ["Egret",1],
+  ["Evercross",4],
+  ["Fat Wheelz",5],
+  ["Fiat",3],
+  ["Freeboy",5],
+  ["Gotrax",4],
+  ["Hiboy",4],
+  ["Ienyrid",5],
+  ["Inmotion",2],
+  ["Inokim",1],
+  ["iScooter",4],
+  ["Isinwheel",3],
+  ["Jeep",3],
+  ["Joyor",3],
+  ["Kaabo",1],
+  ["Kick&Go",3],
+  ["Kickbike (gekentekend)",2,true],
+  ["Kugoo",4],
+  ["Kukirin",4],
+  ["Lamborghini / Platum",3],
+  ["Mercane",2],
+  ["Micro",2],
+  ["Navee",3],
+  ["Nilox",3],
+  ["NIU",2],
+  ["OOK-TEK",5],
+  ["Pure Electric",2],
+  ["Razor",4],
+  ["Rollzone",5],
+  ["Segway-Ninebot",2],
+  ["Selana Alpha (gekentekend)",2,true,1900],
+  ["Selana Nova (gekentekend)",2,true,1100],
+  ["Smartgyro",3],
+  ["SoFlow",3],
+  ["StapStep (trapondersteuning)",2,true,630],
+  ["Stay-on",5],
+  ["Streetbooster",3],
+  ["Sunhood",5],
+  ["Suotu",5],
+  ["SXT",3],
+  ["Teverun",1],
+  ["Todimart",5],
+  ["Trikke (gekentekend)",2,true],
+  ["Unagi",2],
+  ["UrbanGlide",3],
+  ["Urbmob",3],
+  ["Veeley (gekentekend)",2,true],
+  ["Viking Choice / Megawheels",5],
+  ["Vsett",2],
+  ["Windgoo",5],
+  ["Wispeed",4],
+  ["Xiaomi",2],
+  ["YUME",4],
+  ["Zero",2],
+  ["Zwheel",5]
 ];
-const BRANDS = [["7EVEN",1.00,true,799], ...BRAND_LIST, ["Ander A-merk",0.80], ["Budget / onbekend merk",0.60]];
+const CLASSES = {0:'Eigen merk',1:'Klasse 1 · Premium performance',2:'Klasse 2 · A-merk',3:'Klasse 3 · Goed merk / licentiemerk',4:'Klasse 4 · Budgetmerk',5:'Klasse 5 · Onbekend / no-name'};
+const BRANDS = [["7EVEN",0,true,799], ...BRAND_LIST, ["Ander A-merk",2], ["Ander budgetmerk",4], ["Onbekend merk / no-name",5]];
+function brandF(b){ return b[1]===0 ? 1 : (+S['kl'+b[1]] || 0.6); }
 // merken met krachtige (performance) steps
-const PERF = ['Apollo','Dualtron','Egret','Inokim','Kaabo','Mercane','Teverun','Vsett','Zero','Kugoo','Kukirin','Joyor','Unagi','Boyueda','Todimart','Ienyrid','Freeboy','Ausom','Isinwheel','Streetbooster'];
+const PERF = ['YUME','Apollo','Dualtron','Egret','Inokim','Kaabo','Mercane','Teverun','Vsett','Zero','Kugoo','Kukirin','Joyor','Unagi','Boyueda','Todimart','Ienyrid','Freeboy','Ausom','Isinwheel','Streetbooster'];
 // basiswaarde (nieuwprijsniveau NL, incl. btw) naar totaal vermogen
-const WATT_CURVE = [[250,380],[350,550],[500,680],[1000,940],[2000,1360],[3000,1790],[5000,2470],[8000,3060]];
+const WATT_CURVE = [[250,380],[350,550],[500,680],[1000,940],[2000,1360],[3000,1790],[4000,2600],[5000,3100],[6000,3600],[8000,4400]];
 function wattBase(w){
   const c=WATT_CURVE; if(w<=c[0][0]) return c[0][1]; if(w>=c[c.length-1][0]) return c[c.length-1][1];
   for(let i=1;i<c.length;i++){ if(w<=c[i][0]){ const [a,av]=c[i-1],[b,bv]=c[i]; return av+(bv-av)*(w-a)/(b-a);} }
@@ -409,7 +464,7 @@ function wattCheck(w, brandName, engine){
   if(perf && engine==='dual' && w < 1000) return `${n} is laag voor een dual engine van ${brandName}. Deze steps hebben meestal 1.600 tot 6.000 W.`;
   return '';
 }
-// Marktreferenties Nederland, peildatum 20 november 2026, alle bedragen incl. btw.
+// Marktreferenties Nederland, peildatum 21 november 2026, alle bedragen incl. btw.
 // used = vraagprijzen gebruikte exemplaren (Marktplaats e.a.), refurb = refurbished/dealer-occasion, nieuw = nieuwprijs NL webwinkels/dealers
 let REF = [
  {b:'Xiaomi', m:'Essential / 1S / M365 / Lite', k:/essential|1s|m365|lite|mi scooter|^$/i, used:[80,200], nieuw:'€389 – €459', src:[['Marktplaats: Xiaomi steps','https://www.marktplaats.nl/l/fietsen-en-brommers/steps/q/xiaomi+step/'],['Voltwheel: nieuwprijzen Xiaomi','https://www.voltwheel.nl/webshop/e-steps/alle-e-steps/']]},
@@ -425,6 +480,7 @@ let REF = [
  {b:'Kukirin', m:'G2 / G2 Pro / G3', k:/g ?2|g ?3|kirin/i, used:[195,450], nieuw:'€500', src:[['Marktplaats: Kukirin','https://www.marktplaats.nl/q/kukurin/']]},
  {b:'Kaabo', m:'Mantis King GT', k:/king ?gt|mantis ?king/i, used:[1100,1400], nieuw:'€2.449 – €2.518', note:'Weinig NL-aanbod; gebruikt geschat op basis van NL-nieuwprijs en vergelijkbare advertenties.', src:[['Fatdaddy: Kaabo Mantis King GT','https://www.fatdaddy.nl/product/kaabo-mantis-gt/'],['Kaabomantis.nl: King GT','https://kaabomantis.nl/'],['Marktplaats: King GT Zwolle','https://www.marktplaats.nl/l/fietsen-en-brommers/steps/q/step+met+vering/']]},
  {b:'Kaabo', m:'Mantis 10 (dual)', k:/mantis|king|wolf|^$/i, used:[700,1350], src:[['Marktplaats: Kaabo','https://www.marktplaats.nl/l/fietsen-en-brommers/steps/q/kaabo/']]},
+ {b:'Dualtron', m:'X Limited / X2', k:/\bx ?(2|ltd|limited)\b|x-?limited/i, used:[3250,3250], note:'Weinig NL-aanbod: 1 advertentie op Marktplaats (nov 2026); markt deels geschat.', src:[['Marktplaats: Dualtron X Limited (€3.250)','https://www.marktplaats.nl/v/fietsen-en-brommers/steps/m2466191146-dualtron-x-limited-edition-e-step']]},
  {b:'Dualtron', m:'Mini / Popular / City / Thunder / Victor', k:/./i, used:[600,1850], nieuw:'€1.400 – €1.899', src:[['Marktplaats: Dualtron','https://www.marktplaats.nl/l/fietsen-en-brommers/steps/q/dualtron/'],['Marktplaats: Dualtron City (Easy-Ride)','https://www.marktplaats.nl/q/dualtron/']]},
  {b:'Vsett', m:'Vsett 9 / 9+', k:/\b9/i, used:[500,950], nieuw:'€867 – €1.100', src:[['Marktplaats: Vsett 9','https://www.marktplaats.nl/q/zero+9+step/']]},
  {b:'Vsett', m:'Vsett 10+ / 10 Apex', k:/10|apex|^$/i, used:[975,1450], src:[['Marktplaats: Vsett','https://www.marktplaats.nl/l/fietsen-en-brommers/steps/q/vsett/']]},
@@ -440,7 +496,7 @@ let REF = [
  {b:'Todimart', m:'G2', k:/./i, used:null, nieuw:'€299 – €325', note:'Nieuw al voor ±€300 te koop; tweedehands waarde laag.', src:[['Marktplaats: Todimart G2','https://www.marktplaats.nl/q/opvouwbare+elektrische+step/']]}
 ];
 
-let PEIL = '20 november 2026';
+let PEIL = '21 november 2026';
 function loadMarkt(){
   try{
     fetch('markt.json?t='+Date.now(),{cache:'no-store'}).then(r=>r.ok?r.json():null).then(d=>{
@@ -497,6 +553,12 @@ const SETDEF = [
   ["refSingle","Basiswaarde single engine","€ nieuwprijs-niveau"],
   ["refDual","Basiswaarde dual engine","€ nieuwprijs-niveau"],
   ["dual","Extra waarde dual engine","% opslag"],
+  ["Merkklassen",null],
+  ["kl1","Klasse 1 · Premium performance","merkfactor (×)"],
+  ["kl2","Klasse 2 · A-merk","merkfactor (×)"],
+  ["kl3","Klasse 3 · Goed merk / licentie","merkfactor (×)"],
+  ["kl4","Klasse 4 · Budgetmerk","merkfactor (×)"],
+  ["kl5","Klasse 5 · Onbekend / no-name","merkfactor (×)"],
   ["Afschrijving",null],
   ["dropY1","Waardeverlies 1e jaar","%"],
   ["dropYn","Waardeverlies per jaar daarna","%"],
@@ -521,7 +583,7 @@ const eurC = n => { const r=Math.round(n*100)/100; return '€ ' + r.toLocaleStr
 const st = {cond:'good', batt:'ok', engine:'single', rides:'yes', maint:'noproof', qty:1};
 
 // build selects/chips
-$('brand').innerHTML = BRANDS.map((b,i)=>`<option value="${i}">${b[0]}</option>`).join('');
+$('brand').innerHTML = [0,1,2,3,4,5].map(c=>`<optgroup label="${CLASSES[c]}">`+BRANDS.map((b,i)=>b[1]===c?`<option value="${i}">${b[0]}</option>`:'').join('')+'</optgroup>').join('');
 $('brand').value = DEF_BRAND;
 $('cond').innerHTML = CONDS.map(c=>`<button class="chip${c[0]===st.cond?' on':''}" data-v="${c[0]}">${c[1]}<small>${c[2]}</small></button>`).join('');
 const now = new Date();
@@ -569,7 +631,7 @@ function calc(){
   let v = np; rows.push([npIn?`Nieuwprijs ${brand[0]}`:(useWatt?`Basiswaarde ${watt.toLocaleString('nl-NL')} W`:`Basiswaarde ${st.engine==='dual'?'dual':'single'} engine (vermogen onbekend)`), eur(np)]);
   if(st.engine==='dual' && !useWatt){ v *= 1+S.dual/100; rows.push([`Dual engine (+${S.dual}%)`, eur(v)]); }
   const af = ageFactor(mo); v *= af; rows.push([`Leeftijd ${mo} mnd (restwaarde ${Math.round(af*100)}%)`, eur(v)]);
-  v *= brand[1]; rows.push([`Merk ${brand[0]} (×${brand[1].toFixed(2)})`, eur(v)]);
+  const bf = brandF(brand); v *= bf; rows.push([`Merk ${brand[0]} (${brand[1]?'klasse '+brand[1]:'eigen merk'}, ×${bf.toFixed(2).replace('.',',')})`, eur(v)]);
   const kmNorm = Math.max(1,yrs)*S.kmYear;
   const extra = Math.max(0, km - kmNorm);
   const kp = Math.min(S.kmMax, extra/1000*S.kmPen);
@@ -734,11 +796,12 @@ function marketFor(brandName, mo, engine, condF, w){
   const b = BRANDS.find(x=>x[0]===brandName);
   let v = b[3] || (w ? wattBase(w) : (engine==='dual'?S.refDual:S.refSingle));
   if(engine==='dual' && !w) v *= 1+S.dual/100;
-  v *= ageFactor(mo) * b[1] * condF;
+  v *= ageFactor(mo) * brandF(b) * condF;
   return Math.max(0,v);
 }
 function tradeFor(m){ let t=m*S.trade/100; t=Math.floor(t/Math.max(1,S.round))*Math.max(1,S.round); return Math.max(S.minTrade,t); }
 function renderAppx(){
+  $('classTable').innerHTML = '<tr><th>Klasse</th><th>Factor</th><th>Merken</th></tr>' + [1,2,3,4,5].map(c=>`<tr><td><b>${CLASSES[c].replace('Klasse '+c+' · ','')}</b><br><small>klasse ${c}</small></td><td>×${(+S['kl'+c]).toFixed(2).replace('.',',')}</td><td>${BRANDS.filter(b=>b[1]===c).map(b=>b[0].replace(/ \(.*\)/,'')).join(', ')}</td></tr>`).join('');
   document.querySelectorAll('#bijlage [data-s]').forEach(el=>{
     const k=el.dataset.s, u=el.dataset.u, pre=el.dataset.p||'';
     el.textContent = u ? pre + S[k].toLocaleString('nl-NL') + u : eur(S[k]);
