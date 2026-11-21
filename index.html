@@ -279,7 +279,7 @@ details[open] summary::before{content:"– "}
     <li><b>Correcties.</b> Een merkfactor per merkklasse (zie de tabel hieronder), dual engine <span data-s="dual" data-u="%" data-p="+"></span> (alleen als het vermogen onbekend is), kilometers boven <span data-s="kmYear" data-u=" km"></span> per jaar (<span data-s="kmPen" data-u="%"></span> per 1.000 km, maximaal <span data-s="kmMax" data-u="%"></span>), staat (×1,00 als nieuw tot ×0,25 slecht), rijdt niet (<span data-s="notRiding" data-u="%"></span>), onderhoud met bonnen (+<span data-s="maintProof" data-u="%"></span>) of geen/onbekend onderhoud (−<span data-s="maintNone" data-u="%"></span>), geen aankoopbewijs (−<span data-s="noReceipt" data-u="%"></span>), geen adapter (−<span data-s="noCharger"></span>). De uitkomst is de <b>marktwaarde</b>: wat de step particulier in Nederland ongeveer opbrengt.</li>
     <li><b>Marktvergelijking (automatisch).</b> Voor bekende merken en modellen kent de calculator de Nederlandse marktprijzen: tweedehands vraagprijzen, refurbished-prijzen en nieuwprijzen. De verwachte opbrengst is <span data-s="mktReal" data-u="%"></span> van de gemiddelde vraagprijs, gecorrigeerd voor staat en of de step rijdt. De taxatiewaarde is een afweging van twee methoden: het rekenmodel en de markt. Bij een exact herkend model telt de markt voor <span data-s="mktWeight" data-u="%"></span> mee, 10 procentpunt meer bij een smalle prijsrange en 10 minder bij een grote spreiding. Bij alleen merkniveau telt de markt voor 25% mee, bij weinig aanbod voor 40%. Daarnaast toetst de calculator het inruilbod: tussen <span data-s="bandLow" data-u="%"></span> en <span data-s="bandHigh" data-u="%"></span> van de marktopbrengst is in lijn met de markt.</li>
     <li><b>Inruilwaarde.</b> 7EVEN biedt een percentage van de taxatiewaarde dat afhangt van de merkklasse: klasse 1 en 2 <span data-s="tr1" data-u="%"></span> en <span data-s="tr2" data-u="%"></span>, klasse 3 <span data-s="tr3" data-u="%"></span>, klasse 4 <span data-s="tr4" data-u="%"></span> en klasse 5 <span data-s="tr5" data-u="%"></span>. Een A-merk is makkelijk door te verkopen; een no-name step niet. Het verschil dekt het controleren en opknappen, de garantie bij doorverkoop, de tijd tot verkoop en de marge. Afgerond naar beneden op <span data-s="round"></span>.</li>
-    <li><b>Grenzen.</b> De klant krijgt altijd minimaal <span data-s="minTrade"></span>, ook als de step geen waarde heeft. Er is geen maximum: is de inruil meer waard dan de nieuwe 7EVEN, dan ontvangt de klant het verschil.</li>
+    <li><b>Grenzen.</b> De klant krijgt altijd minimaal <span data-s="minTrade"></span>, ook als de step geen waarde heeft. Het inruilbod komt nooit boven de gemiddelde vraagprijs van hetzelfde model in Nederland (als er marktdata is). Verder is er geen maximum: is de inruil meer waard dan de nieuwe 7EVEN, dan ontvangt de klant het verschil.</li>
       <li><b>Bod verkoper.</b> De verkoper kan het voorstel overschrijven met een eigen inruilbod. De calculator toont dan het verschil met het voorstel en toetst het bod aan de markt. De klant ziet alleen het uiteindelijke bod.</li>
   </ol>
   <h4>Merkklassen</h4>
@@ -684,9 +684,10 @@ function calc(){
   const tp = tradePct(brand);
   let t = market * tp/100;
   rows.push([`Inruil = ${tp}% van taxatiewaarde (${brand[1]?'klasse '+brand[1]:'eigen merk'})`, eur(t)]);
-  const capped = false;
+  let capped = false;
   const r = Math.max(1,S.round);
   t = Math.floor(t/r)*r;
+  if(mk && mk.mid>0 && t > mk.mid){ t = Math.floor(mk.mid/r)*r; capped = true; rows.push([`Begrensd: nooit boven de gemiddelde vraagprijs NL (${eur(mk.mid)})`, eur(t)]); }
   if(t < S.minTrade){ t = S.minTrade; rows.push([`Minimale inruilwaarde (gegarandeerd)`, eur(t)]); }
   const tModel = t;
   const ovRaw = ($('ovr').value||'').replace(/[€\s.]/g,'').replace(',','.');
@@ -718,12 +719,12 @@ function calc(){
     box += `<div><span>2 · Markt NL</span><span>geen data</span></div><p class="muted">Taxatie volgt volledig het rekenmodel.</p>`;
   }
   box += `<div style="border-top:1px solid var(--grey);margin-top:6px;padding-top:6px"><span><b>Taxatiewaarde</b></span><span>${eur(market)}</span></div>`;
-  box += `<div><span><b>${overruled?'Voorstel calculator':'Inruilbod'}</b> (${tp}%${tModel===S.minTrade?', minimum':''})</span><span>${eur(tModel)}</span></div>`;
+  box += `<div><span><b>${overruled?'Voorstel calculator':'Inruilbod'}</b> (${tp}%${capped?', begrensd op markt':''}${tModel===S.minTrade?', minimum':''})</span><span>${eur(tModel)}</span></div>`;
   if(overruled) box += `<div style="color:var(--red)"><span><b>Inruilbod verkoper</b></span><span>${eur(t)}</span></div>`;
   if(mk){
     const pct = mk.m2>0 ? t/mk.m2*100 : 0;
     if(!overruled && t===S.minTrade && market*tp/100 < S.minTrade) box += `<span class="verdict lo">Gegarandeerd minimum: de step is minder waard dan ${eur(S.minTrade)}, maar de klant krijgt dit bedrag altijd.</span>`;
-    else if(capped) box += `<span class="verdict lo">Deze step is meer waard dan het maximale inruilbod. Privé brengt hij ongeveer ${eur(mk.m2)} op; de klant verkoopt hem waarschijnlijk liever zelf.</span>`;
+    else if(capped) box += `<span class="verdict lo">Begrensd op de gemiddelde vraagprijs in Nederland (${eur(mk.mid)}). 7EVEN biedt nooit meer dan de markt vraagt.</span>`;
     else if(pct < S.bandLow) box += `<span class="verdict lo">Laag t.o.v. de markt (${Math.round(pct)}% van de koopprijs). De klant kan het bod te laag vinden.</span>`;
     else if(pct > S.bandHigh) box += `<span class="verdict hi">Hoog t.o.v. de markt (${Math.round(pct)}% van de koopprijs). Weinig ruimte voor opknappen en marge.</span>`;
     else box += `<span class="verdict ok">In lijn met de markt: ${Math.round(pct)}% van wat de step privé opbrengt.</span>`;
