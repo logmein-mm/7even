@@ -278,7 +278,7 @@ details[open] summary::before{content:"– "}
     <li><b>Afschrijving.</b> <span data-s="dropY1" data-u="%"></span> waardeverlies in het eerste jaar, daarna <span data-s="dropYn" data-u="%"></span> per jaar. De restwaarde is nooit lager dan <span data-s="floor" data-u="%"></span> van de basiswaarde.</li>
     <li><b>Correcties.</b> Een merkfactor per merkklasse (zie de tabel hieronder), dual engine <span data-s="dual" data-u="%" data-p="+"></span> (alleen als het vermogen onbekend is), kilometers boven <span data-s="kmYear" data-u=" km"></span> per jaar (<span data-s="kmPen" data-u="%"></span> per 1.000 km, maximaal <span data-s="kmMax" data-u="%"></span>), staat (×1,00 als nieuw tot ×0,25 slecht), rijdt niet (<span data-s="notRiding" data-u="%"></span>), onderhoud met bonnen (+<span data-s="maintProof" data-u="%"></span>) of geen/onbekend onderhoud (−<span data-s="maintNone" data-u="%"></span>), geen aankoopbewijs (−<span data-s="noReceipt" data-u="%"></span>), geen adapter (−<span data-s="noCharger"></span>). De uitkomst is de <b>marktwaarde</b>: wat de step particulier in Nederland ongeveer opbrengt.</li>
     <li><b>Marktvergelijking (automatisch).</b> Voor bekende merken en modellen kent de calculator de Nederlandse marktprijzen: tweedehands vraagprijzen, refurbished-prijzen en nieuwprijzen. De verwachte opbrengst is <span data-s="mktReal" data-u="%"></span> van de gemiddelde vraagprijs, gecorrigeerd voor staat en of de step rijdt. De taxatiewaarde is een afweging van twee methoden: het rekenmodel en de markt. Bij een exact herkend model telt de markt voor <span data-s="mktWeight" data-u="%"></span> mee, 10 procentpunt meer bij een smalle prijsrange en 10 minder bij een grote spreiding. Bij alleen merkniveau telt de markt voor 25% mee, bij weinig aanbod voor 40%. Daarnaast toetst de calculator het inruilbod: tussen <span data-s="bandLow" data-u="%"></span> en <span data-s="bandHigh" data-u="%"></span> van de marktopbrengst is in lijn met de markt.</li>
-    <li><b>Inruilwaarde.</b> 7EVEN biedt <span data-s="trade" data-u="%"></span> van de marktwaarde. Het verschil dekt het controleren en opknappen, de garantie bij doorverkoop, de tijd tot verkoop en de marge. Afgerond naar beneden op <span data-s="round"></span>.</li>
+    <li><b>Inruilwaarde.</b> 7EVEN biedt een percentage van de taxatiewaarde dat afhangt van de merkklasse: klasse 1 en 2 <span data-s="tr1" data-u="%"></span> en <span data-s="tr2" data-u="%"></span>, klasse 3 <span data-s="tr3" data-u="%"></span>, klasse 4 <span data-s="tr4" data-u="%"></span> en klasse 5 <span data-s="tr5" data-u="%"></span>. Een A-merk is makkelijk door te verkopen; een no-name step niet. Het verschil dekt het controleren en opknappen, de garantie bij doorverkoop, de tijd tot verkoop en de marge. Afgerond naar beneden op <span data-s="round"></span>.</li>
     <li><b>Grenzen.</b> De klant krijgt altijd minimaal <span data-s="minTrade"></span>, ook als de step geen waarde heeft. Er is geen maximum: is de inruil meer waard dan de nieuwe 7EVEN, dan ontvangt de klant het verschil.</li>
       <li><b>Bod verkoper.</b> De verkoper kan het voorstel overschrijven met een eigen inruilbod. De calculator toont dan het verschil met het voorstel en toetst het bod aan de markt. De klant ziet alleen het uiteindelijke bod.</li>
   </ol>
@@ -351,7 +351,7 @@ const DEFAULTS = {
   kmYear: 2000,        // normaal gebruik km per jaar
   kmPen: 2,            // % aftrek per 1.000 km boven normaal
   kmMax: 25,           // max % km-aftrek
-  trade: 70,           // % van marktwaarde die 7EVEN biedt (dekt refurb + marge)
+  tr1: 85, tr2: 85, tr3: 75, tr4: 65, tr5: 60,   // inruil-% van taxatiewaarde per merkklasse (dekt refurb + marge)
   noCharger: 35,       // € aftrek zonder adapter
   maintProof: 5,       // % opslag onderhoud met bonnen
   maintNone: 10,       // % aftrek geen/onbekend onderhoud
@@ -443,6 +443,7 @@ const BRAND_LIST = [
 ];
 const CLASSES = {0:'Eigen merk',1:'Klasse 1 · Premium performance',2:'Klasse 2 · A-merk',3:'Klasse 3 · Goed merk / licentiemerk',4:'Klasse 4 · Budgetmerk',5:'Klasse 5 · Onbekend / no-name'};
 const BRANDS = [["7EVEN",0,true,799], ...BRAND_LIST, ["Ander A-merk",2], ["Ander budgetmerk",4], ["Onbekend merk / no-name",5]];
+function tradePct(b){ return +S['tr'+(b[1]||2)] || 70; }
 function brandF(b){ return b[1]===0 ? 1 : (+S['kl'+b[1]] || 0.6); }
 // merken met krachtige (performance) steps
 const PERF = ['YUME','Apollo','Dualtron','Egret','Inokim','Kaabo','Mercane','Teverun','Vsett','Zero','Kugoo','Kukirin','Joyor','Unagi','Boyueda','Todimart','Ienyrid','Freeboy','Ausom','Isinwheel','Streetbooster'];
@@ -542,7 +543,11 @@ const SETDEF = [
   ["leges","Leges (kenteken)","€ per stuk"],
   ["premium","Inruilpremie bij aankoop","€ per stuk"],
   ["minTrade","Minimale inruilwaarde","€ altijd, ook zonder waarde"],
-  ["trade","Inruilpercentage","% van marktwaarde"],
+  ["tr1","Inruil % · klasse 1 Premium","% van taxatiewaarde"],
+  ["tr2","Inruil % · klasse 2 A-merk (en 7EVEN)","% van taxatiewaarde"],
+  ["tr3","Inruil % · klasse 3 Goed / licentie","% van taxatiewaarde"],
+  ["tr4","Inruil % · klasse 4 Budget","% van taxatiewaarde"],
+  ["tr5","Inruil % · klasse 5 No-name","% van taxatiewaarde"],
   ["Marktvergelijking NL",null],
   ["mktReal","Opbrengst t.o.v. gemiddelde vraagprijs","%"],
   ["mktWeight","Basisgewicht markt bij exact model","% (±10 naar spreiding)"],
@@ -676,8 +681,9 @@ function calc(){
     rows.push(['<b>= Taxatiewaarde</b> (100% model)', '<b>'+eur(market)+'</b>']);
   }
   $('refHint').textContent = rf ? (rf.exact ? `Marktreferentie gevonden: ${rf.r.b.replace(/ \(.*\)/,'')} ${rf.r.m}.` : `Geen exact model herkend; vergelijking op merkniveau. Kies een model uit de lijst voor een scherpere vergelijking.`) : 'Voor dit merk is geen Nederlandse marktreferentie gevonden; de taxatie volgt het model.';
-  let t = market * S.trade/100;
-  rows.push([`Inruil = ${S.trade}% van taxatiewaarde`, eur(t)]);
+  const tp = tradePct(brand);
+  let t = market * tp/100;
+  rows.push([`Inruil = ${tp}% van taxatiewaarde (${brand[1]?'klasse '+brand[1]:'eigen merk'})`, eur(t)]);
   const capped = false;
   const r = Math.max(1,S.round);
   t = Math.floor(t/r)*r;
@@ -712,11 +718,11 @@ function calc(){
     box += `<div><span>2 · Markt NL</span><span>geen data</span></div><p class="muted">Taxatie volgt volledig het rekenmodel.</p>`;
   }
   box += `<div style="border-top:1px solid var(--grey);margin-top:6px;padding-top:6px"><span><b>Taxatiewaarde</b></span><span>${eur(market)}</span></div>`;
-  box += `<div><span><b>${overruled?'Voorstel calculator':'Inruilbod'}</b> (${S.trade}%${tModel===S.minTrade?', minimum':''})</span><span>${eur(tModel)}</span></div>`;
+  box += `<div><span><b>${overruled?'Voorstel calculator':'Inruilbod'}</b> (${tp}%${tModel===S.minTrade?', minimum':''})</span><span>${eur(tModel)}</span></div>`;
   if(overruled) box += `<div style="color:var(--red)"><span><b>Inruilbod verkoper</b></span><span>${eur(t)}</span></div>`;
   if(mk){
     const pct = mk.m2>0 ? t/mk.m2*100 : 0;
-    if(!overruled && t===S.minTrade && market*S.trade/100 < S.minTrade) box += `<span class="verdict lo">Gegarandeerd minimum: de step is minder waard dan ${eur(S.minTrade)}, maar de klant krijgt dit bedrag altijd.</span>`;
+    if(!overruled && t===S.minTrade && market*tp/100 < S.minTrade) box += `<span class="verdict lo">Gegarandeerd minimum: de step is minder waard dan ${eur(S.minTrade)}, maar de klant krijgt dit bedrag altijd.</span>`;
     else if(capped) box += `<span class="verdict lo">Deze step is meer waard dan het maximale inruilbod. Privé brengt hij ongeveer ${eur(mk.m2)} op; de klant verkoopt hem waarschijnlijk liever zelf.</span>`;
     else if(pct < S.bandLow) box += `<span class="verdict lo">Laag t.o.v. de markt (${Math.round(pct)}% van de koopprijs). De klant kan het bod te laag vinden.</span>`;
     else if(pct > S.bandHigh) box += `<span class="verdict hi">Hoog t.o.v. de markt (${Math.round(pct)}% van de koopprijs). Weinig ruimte voor opknappen en marge.</span>`;
@@ -799,7 +805,7 @@ function marketFor(brandName, mo, engine, condF, w){
   v *= ageFactor(mo) * brandF(b) * condF;
   return Math.max(0,v);
 }
-function tradeFor(m){ let t=m*S.trade/100; t=Math.floor(t/Math.max(1,S.round))*Math.max(1,S.round); return Math.max(S.minTrade,t); }
+function tradeFor(m,pct){ let t=m*(pct||70)/100; t=Math.floor(t/Math.max(1,S.round))*Math.max(1,S.round); return Math.max(S.minTrade,t); }
 function renderAppx(){
   $('classTable').innerHTML = '<tr><th>Klasse</th><th>Factor</th><th>Merken</th></tr>' + [1,2,3,4,5].map(c=>`<tr><td><b>${CLASSES[c].replace('Klasse '+c+' · ','')}</b><br><small>klasse ${c}</small></td><td>×${(+S['kl'+c]).toFixed(2).replace('.',',')}</td><td>${BRANDS.filter(b=>b[1]===c).map(b=>b[0].replace(/ \(.*\)/,'')).join(', ')}</td></tr>`).join('');
   document.querySelectorAll('#bijlage [data-s]').forEach(el=>{
