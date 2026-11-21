@@ -82,6 +82,11 @@ input:focus,select:focus{border-color:var(--red)}
 .mkt div span:last-child{font-weight:700;white-space:nowrap}
 .mkt .verdict{display:block;margin-top:8px;padding:8px 10px;border-radius:4px;font-weight:600}
 .mkt .ok{background:#e8f4ea;color:#1d5e2a}.mkt .lo{background:#fff4e0;color:#7a4b00}.mkt .hi{background:#fbe9ea;color:#8f1d22}
+.ovr{margin-top:14px;padding:12px;border:1.5px dashed var(--line);border-radius:4px}
+.ovr.on{border-color:var(--red);background:#fdf3f3}
+.ovr .row{display:flex;gap:8px}.ovr .row input{flex:1}
+.ovr .row button{height:50px;padding:0 12px;font-size:12px;white-space:nowrap}
+.ovr p{font-size:12px;color:var(--mid);margin:7px 0 0}.ovr.on p{color:#8f1d22;font-weight:600}
 .mkt .muted{color:var(--mid);font-size:12px}
 .legesIn input{height:42px;text-align:right;padding-right:10px;font-weight:600}
 .eq .line.vkp{font-weight:800;font-size:16px;border-top:1.5px solid var(--ink);border-bottom:1.5px solid var(--ink);background:var(--grey2);padding-left:8px;padding-right:8px}
@@ -245,6 +250,9 @@ details[open] summary::before{content:"– "}
       <div class="line tot"><span id="rPayLbl">= Bij te betalen</span><span id="rPay">€ 799</span></div>
     </div>
     <span id="rTrade" hidden></span>
+    <div class="ovr" id="ovrBox"><label class="flabel" for="ovr">Inruilbod verkoper <span style="font-weight:500;text-transform:none;letter-spacing:0;color:var(--mid)">(optioneel, overschrijft het voorstel)</span></label>
+      <div class="row"><input type="text" inputmode="decimal" id="ovr" placeholder="Voorstel: € 0" autocomplete="off"><button class="btn s" id="ovrClr" type="button">Wissen</button></div>
+      <p id="ovrNote">Laat leeg om het voorstel van de calculator te gebruiken.</p></div>
     <div class="mkt" id="mktBox"></div>
     <details id="calcBox"><summary>Zo is het berekend</summary><div class="calc" id="calc"></div></details>
     <div class="field"><label for="cust">Naam klant <span style="font-weight:500;text-transform:none;letter-spacing:0;color:var(--mid)">(optioneel)</span></label>
@@ -272,6 +280,7 @@ details[open] summary::before{content:"– "}
     <li><b>Marktvergelijking (automatisch).</b> Voor bekende merken en modellen kent de calculator de Nederlandse marktprijzen: tweedehands vraagprijzen, refurbished-prijzen en nieuwprijzen. De verwachte opbrengst is <span data-s="mktReal" data-u="%"></span> van de gemiddelde vraagprijs, gecorrigeerd voor staat en of de step rijdt. De taxatiewaarde is een afweging van twee methoden: het rekenmodel en de markt. Bij een exact herkend model telt de markt voor <span data-s="mktWeight" data-u="%"></span> mee, 10 procentpunt meer bij een smalle prijsrange en 10 minder bij een grote spreiding. Bij alleen merkniveau telt de markt voor 25% mee, bij weinig aanbod voor 40%. Daarnaast toetst de calculator het inruilbod: tussen <span data-s="bandLow" data-u="%"></span> en <span data-s="bandHigh" data-u="%"></span> van de marktopbrengst is in lijn met de markt.</li>
     <li><b>Inruilwaarde.</b> 7EVEN biedt <span data-s="trade" data-u="%"></span> van de marktwaarde. Het verschil dekt het controleren en opknappen, de garantie bij doorverkoop, de tijd tot verkoop en de marge. Afgerond naar beneden op <span data-s="round"></span>.</li>
     <li><b>Grenzen.</b> De klant krijgt altijd minimaal <span data-s="minTrade"></span>, ook als de step geen waarde heeft,. Er is geen maximum: is de inruil meer waard dan de nieuwe 7EVEN, dan ontvangt de klant het verschil.</li>
+      <li><b>Bod verkoper.</b> De verkoper kan het voorstel overschrijven met een eigen inruilbod. De calculator toont dan het verschil met het voorstel en toetst het bod aan de markt. De klant ziet alleen het uiteindelijke bod.</li>
   </ol>
   <h4>2. Waarom deze uitgangspunten</h4>
   <ul>
@@ -528,7 +537,7 @@ function bindChips(id,key){
   });
 }
 bindChips('engine','engine'); bindChips('rides','rides'); $('brand').addEventListener('change',fillModels); bindChips('maint','maint'); bindChips('cond','cond');
-['legesIn','brand','model','watt','km','ageY','ageM','charger','receipt','cust'].forEach(id=>{
+['legesIn','brand','model','watt','km','ageY','ageM','charger','receipt','cust','ovr'].forEach(id=>{
   $(id).addEventListener('input',calc); $(id).addEventListener('change',calc);
 });
 $('qMin').onclick=()=>{st.qty=Math.max(1,st.qty-1);calc();};
@@ -611,6 +620,20 @@ function calc(){
   const r = Math.max(1,S.round);
   t = Math.floor(t/r)*r;
   if(t < S.minTrade){ t = S.minTrade; rows.push([`Minimale inruilwaarde (gegarandeerd)`, eur(t)]); }
+  const tModel = t;
+  const ovRaw = ($('ovr').value||'').replace(/[€\s.]/g,'').replace(',','.');
+  const ov = ovRaw==='' ? null : parseFloat(ovRaw);
+  const overruled = ov!==null && isFinite(ov) && ov>=0;
+  $('ovr').placeholder = 'Voorstel: '+eur(tModel);
+  if(overruled){
+    t = Math.round(ov);
+    rows.push(['<b>Aangepast door verkoper</b>', '<b>'+eur(t)+'</b>']);
+    const d = t - tModel, dp = tModel ? Math.round(d/tModel*100) : 0;
+    $('ovrNote').textContent = `Voorstel calculator ${eur(tModel)} · verkoper ${eur(t)} · verschil ${d>=0?'+':'−'}${eur(Math.abs(d))} (${d>=0?'+':'−'}${Math.abs(dp)}%)` + (t<S.minTrade?` · let op: onder het minimum van ${eur(S.minTrade)}`:'');
+  } else {
+    $('ovrNote').textContent = ovRaw==='' ? 'Laat leeg om het voorstel van de calculator te gebruiken.' : 'Ongeldig bedrag, het voorstel van de calculator wordt gebruikt.';
+  }
+  $('ovrBox').classList.toggle('on', overruled);
   const prem = t>0 ? S.premium : 0;
   let box = `<h5>Taxatie in twee methoden</h5>`;
   if(rf) box += `<p class="muted">${rf.r.b.replace(/ \(.*\)/,'')} ${rf.r.m==='merkniveau'?'':rf.r.m}${rf.exact?'':' (merkniveau)'} · marktdata ${PEIL} · incl. btw</p>`;
@@ -627,10 +650,11 @@ function calc(){
     box += `<div><span>2 · Markt NL</span><span>geen data</span></div><p class="muted">Taxatie volgt volledig het rekenmodel.</p>`;
   }
   box += `<div style="border-top:1px solid var(--grey);margin-top:6px;padding-top:6px"><span><b>Taxatiewaarde</b></span><span>${eur(market)}</span></div>`;
-  box += `<div><span><b>Inruilbod</b> (${S.trade}%${capped?', begrensd':''}${t===S.minTrade?', minimum':''})</span><span>${eur(t)}</span></div>`;
+  box += `<div><span><b>${overruled?'Voorstel calculator':'Inruilbod'}</b> (${S.trade}%${tModel===S.minTrade?', minimum':''})</span><span>${eur(tModel)}</span></div>`;
+  if(overruled) box += `<div style="color:var(--red)"><span><b>Inruilbod verkoper</b></span><span>${eur(t)}</span></div>`;
   if(mk){
     const pct = mk.m2>0 ? t/mk.m2*100 : 0;
-    if(t===S.minTrade && market*S.trade/100 < S.minTrade) box += `<span class="verdict lo">Gegarandeerd minimum: de step is minder waard dan ${eur(S.minTrade)}, maar de klant krijgt dit bedrag altijd.</span>`;
+    if(!overruled && t===S.minTrade && market*S.trade/100 < S.minTrade) box += `<span class="verdict lo">Gegarandeerd minimum: de step is minder waard dan ${eur(S.minTrade)}, maar de klant krijgt dit bedrag altijd.</span>`;
     else if(capped) box += `<span class="verdict lo">Deze step is meer waard dan het maximale inruilbod. Privé brengt hij ongeveer ${eur(mk.m2)} op; de klant verkoopt hem waarschijnlijk liever zelf.</span>`;
     else if(pct < S.bandLow) box += `<span class="verdict lo">Laag t.o.v. de markt (${Math.round(pct)}% van de koopprijs). De klant kan het bod te laag vinden.</span>`;
     else if(pct > S.bandHigh) box += `<span class="verdict hi">Hoog t.o.v. de markt (${Math.round(pct)}% van de koopprijs). Weinig ruimte voor opknappen en marge.</span>`;
@@ -648,7 +672,7 @@ function calc(){
   $('rQty').textContent = st.qty>1 ? '× '+st.qty : '';
   $('rNew').textContent = eur(S.price*st.qty); $('rLeges').textContent = eurC(leges); $('rVkp').textContent = eurC(total); $('sNew').textContent = eur(S.price*st.qty); $('sVkp').textContent = eurC(total); $('bNew').textContent = eurC(total);
   const mdl = ($('model').value||'').trim();
-  $('rModel').textContent = brand[0] + (mdl?' '+mdl:'') + (watt?` · ${watt.toLocaleString('nl-NL')} W`:'');
+  $('rModel').textContent = brand[0] + (mdl?' '+mdl:'') + (watt?` · ${watt.toLocaleString('nl-NL')} W`:'') + (overruled?' · bod verkoper':'');
   $('rTrade').textContent = eur(t); $('rTrade2').textContent = '− '+eur(t);
   $('rPremRow').style.display = prem? '' : 'none'; $('rPrem').textContent = '− '+eur(prem);
   $('rPayLbl').textContent = pay<0 ? '= Klant ontvangt' : '= Bij te betalen';
@@ -681,13 +705,14 @@ $('copy').onclick = async ()=>{
   catch(e){ const ta=document.createElement('textarea'); ta.value=txt; document.body.appendChild(ta); ta.select(); try{document.execCommand('copy');toast('Voorstel gekopieerd');}catch(_){toast('Kopiëren niet gelukt');} ta.remove(); }
 };
 $('reset').onclick = ()=>{
-  ['model','watt','km','cust'].forEach(id=>$(id).value=''); fillModels();
+  ['model','watt','km','cust','ovr'].forEach(id=>$(id).value=''); fillModels();
   $('legesIn').value=S.leges; $('brand').value=DEF_BRAND; $('ageY').value=2; $('ageM').value=0;
   ['charger','receipt'].forEach(id=>$(id).checked=true);
   st.cond='good'; st.batt='ok'; st.engine='single'; st.rides='yes'; st.maint='noproof'; st.qty=1;
   [['maint','maint'],['rides','rides'],['engine','engine'],['cond','cond']].forEach(([id,k])=>[...$(id).children].forEach(c=>c.classList.toggle('on',c.dataset.v===st[k])));
   calc(); window.scrollTo({top:0,behavior:'smooth'});
 };
+$('ovrClr').onclick = ()=>{ $('ovr').value=''; calc(); };
 $('toRes').onclick = ()=> $('result').scrollIntoView({behavior:'smooth',block:'start'});
 
 // settings
